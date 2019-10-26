@@ -26,4 +26,8 @@ hs_err_pid*
 .classpath
 .project
 
+# Intellij project files
+*.iml
+*.ipr
+*.iws
 .idea/
