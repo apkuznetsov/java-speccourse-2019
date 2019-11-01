@@ -1,6 +1,6 @@
 package com.company.Series;
 
-import com.company.SeriesExceptions.DatabaseNotSetException;
+import com.company.Exceptions.DatabaseNotSetException;
 
 import java.util.LinkedList;
 import java.util.NoSuchElementException;

@@ -1,19 +1,14 @@
 package com.company.Series;
 
-import com.company.SeriesExceptions.IllegalIndexException;
+import com.company.Exceptions.IllegalIndexException;
 
-public class BooksSet implements Seriesable {
+import java.io.*;
+
+public class BooksSet implements Seriesable, Serializable {
     private String title;
     private int numOfPrefacePages;
     private String[] books;
     private int[] numsOfPages;
-
-    public BooksSet() {
-        title = "без названия";
-        numOfPrefacePages = Seriesable.MIN_NUM_OF_START_PAGES;
-        books = new String[Seriesable.MIN_NUM_OF_ELS_OF_SERIES];
-        numsOfPages = new int[books.length];
-    }
 
     public BooksSet(String title, int numOfPrefacePages, int numOfBooks) {
         this.title = title;
@@ -68,12 +63,12 @@ public class BooksSet implements Seriesable {
         numOfPrefacePages = num;
     }
 
-    public void setEl(int index, String title) {
+    public void setEl(int index, String el) {
         if (index < 0 || index >= books.length) {
             throw new IllegalIndexException("неверный индекс");
         }
 
-        books[index] = title;
+        books[index] = el;
     }
 
     public void setNumOfPagesOfEl(int index, int num) {
@@ -171,4 +166,58 @@ public class BooksSet implements Seriesable {
         return super.hashCode();
     }
     // endregion
+
+    public void outputAsBytes(OutputStream out) {
+        BufferedOutputStream buffer = new BufferedOutputStream(out);
+        DataOutputStream dataOutputter = new DataOutputStream(buffer);
+
+        try {
+            dataOutputter.writeUTF(title);
+            dataOutputter.writeInt(numOfPrefacePages);
+            dataOutputter.writeInt(books.length);
+
+            for (int index = 0; index < books.length; index++) {
+                dataOutputter.writeUTF(books[index]);
+                dataOutputter.writeInt(numsOfPages[index]);
+            }
+
+            dataOutputter.flush();
+            dataOutputter.close();
+
+            buffer.flush();
+            buffer.close();
+        } catch (IOException exc) {
+            System.out.println(exc.getMessage());
+        }
+    }
+
+    public void writeAsText(Writer out) {
+        BufferedWriter buffer = new BufferedWriter(out);
+        PrintWriter printer = new PrintWriter(buffer);
+
+        try {
+            printer.println(title);
+            printer.println();
+
+            printer.println(numOfPrefacePages);
+            printer.println();
+
+            printer.println(books.length);
+            printer.println();
+
+            for (int index = 0; index < books.length; index++) {
+                printer.println(books[index]);
+                printer.println(numsOfPages[index]);
+                printer.println();
+            }
+
+            printer.flush();
+            printer.close();
+
+            buffer.flush();
+            buffer.close();
+        } catch (IOException exc) {
+            System.out.println(exc.getMessage());
+        }
+    }
 }

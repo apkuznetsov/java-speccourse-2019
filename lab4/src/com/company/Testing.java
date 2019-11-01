@@ -1,12 +1,12 @@
 package com.company;
 
-import com.company.Series.ArticlesSet;
-import com.company.Series.BooksSet;
-import com.company.Series.Seriesable;
+import com.company.Series.*;
 
 import java.util.Random;
 
-public class TestingSeries {
+import static com.company.Menu.*;
+
+public class Testing {
     // region titles
     private static final String TITLE_1 = "Каталог лучших услуг в географическом регионе";
     private static final String TITLE_2 = "Список лучших рассказов 1913 года";
@@ -43,9 +43,11 @@ public class TestingSeries {
     private static final String EL_25 = "Подросток";
     // endregion
 
-    public static Seriesable[] createAndFillInDbWithFiveElsAutomatically() {
+    static Seriesable[] createAndFillInDbWithFiveElsAutomatically() {
         Seriesable[] db = createSeriesableArrWithFiveEls();
         setElsInSeriesableArrWithFiveEls(db);
+
+        printGreenLn("база успешно создана и заполнена");
 
         return db;
     }
@@ -163,7 +165,29 @@ public class TestingSeries {
         return getRandInt(Seriesable.MIN_NUM_OF_PAGES_OF_EL, Seriesable.MAX_NUM_OF_PAGES_OF_EL);
     }
 
-    public static void setTwoSeriesableWithSameSumOfPagesWithoutStart(Seriesable[] s) {
+    static Seriesable createAndFillSeriesableAutomatically() {
+        Seriesable s;
+
+        s = getSeriesableWithRandGeneratedType(TITLE_1, getRandNumOfStartPages(), 5);
+
+        s.setEl(0, EL_1);
+        s.setEl(1, EL_2);
+        s.setEl(2, EL_3);
+        s.setEl(3, EL_4);
+        s.setEl(4, EL_5);
+
+        s.setNumOfPagesOfEl(0, getRandNumOfPages());
+        s.setNumOfPagesOfEl(1, getRandNumOfPages());
+        s.setNumOfPagesOfEl(2, getRandNumOfPages());
+        s.setNumOfPagesOfEl(3, getRandNumOfPages());
+        s.setNumOfPagesOfEl(4, getRandNumOfPages());
+
+        printGreenLn("объект успешно создан и заполнен");
+
+        return s;
+    }
+
+    static void setTwoSeriesableWithSameSumOfPagesWithoutStart(Seriesable[] s) {
         int lastIndex = s.length - 1;
 
         int firstIndex = getRandInt(0, lastIndex);
@@ -178,5 +202,7 @@ public class TestingSeries {
             sameNumOfPages = firstSeriesable.getNumOfPages(i);
             secondSeriesable.setNumOfPagesOfEl(i, sameNumOfPages);
         }
+
+        printGreenLn("база успешно создана и заполнена");
     }
 }

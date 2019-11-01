@@ -1,5 +1,7 @@
 package com.company.Series;
 
+import java.io.*;
+
 public interface Seriesable {
     int MIN_LEN_OF_ARR = 1;
     int MAX_LEN_OF_ARR = 5;
@@ -15,9 +17,9 @@ public interface Seriesable {
 
     String getTitle();
 
-    int getNumOfEls();
-
     int getNumOfStartPages();
+
+    int getNumOfEls();
 
     String getEl(int index);
 
@@ -27,9 +29,13 @@ public interface Seriesable {
 
     void setNumOfStartPages(int num);
 
-    void setEl(int index, String title);
+    void setEl(int index, String el);
 
     void setNumOfPagesOfEl(int index, int num);
 
     int getSumOfPagesWithoutStart();
+
+    void outputAsBytes(OutputStream out); // запись в байтовый поток
+
+    void writeAsText(Writer out); // запись в символьный поток
 }
