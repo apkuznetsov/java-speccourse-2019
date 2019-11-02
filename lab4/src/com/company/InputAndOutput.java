@@ -1,22 +1,23 @@
 package com.company;
 
 import com.company.Exceptions.NullSeriesableObjectException;
-import com.company.Series.BooksSet;
+import com.company.Series.ArticlesSeries;
+import com.company.Series.BooksSeries;
 import com.company.Series.Seriesable;
 
 import java.io.*;
 
 public class InputAndOutput {
-    // region output
-    public static void outputSeriesableAsBytes(Seriesable s, OutputStream out) {
+    // region запись объекта
+    public static void outputSerAsBytes(Seriesable s, OutputStream out) {
         s.outputAsBytes(out);
     }
 
-    public static void writeSeriesableAsText(Seriesable s, Writer out) {
+    public static void writeSerAsText(Seriesable s, Writer out) {
         s.writeAsText(out);
     }
 
-    public static void serializeSeriesable(Seriesable s, OutputStream out) {
+    public static void serializeSer(Seriesable s, OutputStream out) {
         try {
             ObjectOutputStream serializer = new ObjectOutputStream(out);
             serializer.writeObject(s);
@@ -27,21 +28,73 @@ public class InputAndOutput {
     }
     // endregion
 
-    public static Seriesable inputBytesAsSeriesable(InputStream in) throws NullSeriesableObjectException {
-        String title;
-        int numOfStartPages;
-        int numOfEls;
+    // region запись массива
+    public static void outputSerArrAsBytes(Seriesable[] sArr, OutputStream out) {
+        outputLenOfSerArrAsBytes(sArr, out);
+        for (Seriesable s : sArr) {
+            s.outputAsBytes(out);
+        }
+    }
+
+    private static void outputLenOfSerArrAsBytes(Seriesable[] sArr, OutputStream out) {
+        BufferedOutputStream buffer = new BufferedOutputStream(out);
+        DataOutputStream dataOutputter = new DataOutputStream(buffer);
+
+        try {
+            dataOutputter.writeInt(sArr.length);
+            dataOutputter.flush();
+            buffer.flush();
+        } catch (IOException exc) {
+            System.out.println(exc.getMessage());
+        }
+    }
+
+    public static void writeSerArrAsText(Seriesable[] sArr, Writer out) {
+        writeLenOfSerArrAsText(sArr, out);
+        for (Seriesable s : sArr) {
+            s.writeAsText(out);
+        }
+    }
+
+    private static void writeLenOfSerArrAsText(Seriesable[] sArr, Writer out) {
+        BufferedWriter buffer = new BufferedWriter(out);
+        PrintWriter printer = new PrintWriter(buffer);
+
+        try {
+            printer.println(sArr.length);
+            printer.println();
+            printer.flush();
+            buffer.flush();
+        } catch (IOException exc) {
+            System.out.println(exc.getMessage());
+        }
+    }
+
+    public static void serializeSerArr(Seriesable[] sArr, OutputStream out) {
+        try {
+            ObjectOutputStream serializer = new ObjectOutputStream(out);
+            serializer.writeObject(sArr);
+            serializer.flush();
+        } catch (IOException exc) {
+            System.out.println(exc.getMessage());
+        }
+    }
+    // endregion
+
+    // region считывание объекта
+    public static Seriesable inputBytesAsSer(InputStream in) throws NullSeriesableObjectException, ClassNotFoundException {
         Seriesable s;
 
         DataInputStream dataInputter = new DataInputStream(in);
         try {
-            title = dataInputter.readUTF();
-            numOfStartPages = dataInputter.readInt();
-            numOfEls = dataInputter.readInt();
+            String className = dataInputter.readUTF();
+            String title = dataInputter.readUTF();
+            int numOfStartPages = dataInputter.readInt();
+            int numOfEls = dataInputter.readInt();
 
-            s = new BooksSet(title, numOfStartPages, numOfEls);
+            s = getNewSerByClassName(className, title, numOfStartPages, numOfEls);
+
             final int len = s.getNumOfEls();
-
             String el;
             int numOfPages;
             for (int index = 0; index < len; index++) {
@@ -54,6 +107,8 @@ public class InputAndOutput {
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
             s = null;
+        } catch (ClassNotFoundException exc) {
+            throw new ClassNotFoundException(exc.getMessage());
         }
 
         if (s == null) {
@@ -63,26 +118,36 @@ public class InputAndOutput {
         return s;
     }
 
-    public static Seriesable readTextAsSeriesable(Reader in) throws NullSeriesableObjectException {
-        String title;
-        int numOfStartPages;
-        int numOfEls;
+    private static Seriesable getNewSerByClassName(String className, String title, int numOfStartPages, int numOfEls) throws ClassNotFoundException {
+        if (className.equals(ArticlesSeries.class.getName())) {
+            return new ArticlesSeries(title, numOfStartPages, numOfEls);
+        } else if (className.equals(BooksSeries.class.getName())) {
+            return new BooksSeries(title, numOfStartPages, numOfEls);
+        } else {
+            throw new ClassNotFoundException("ошибка: такого класса не существует");
+        }
+    }
+
+    public static Seriesable readTextAsSer(Reader in) throws NullSeriesableObjectException, ClassNotFoundException {
         Seriesable s;
 
         BufferedReader reader = new BufferedReader(in);
         try {
-            title = reader.readLine();
+            String className = reader.readLine();
             reader.readLine();
 
-            numOfStartPages = Integer.parseInt(reader.readLine());
+            String title = reader.readLine();
             reader.readLine();
 
-            numOfEls = Integer.parseInt(reader.readLine());
+            int numOfStartPages = Integer.parseInt(reader.readLine());
             reader.readLine();
 
-            s = new BooksSet(title, numOfStartPages, numOfEls);
+            int numOfEls = Integer.parseInt(reader.readLine());
+            reader.readLine();
+
+            s = getNewSerByClassName(className, title, numOfStartPages, numOfEls);
+
             final int len = s.getNumOfEls();
-
             String el;
             int numOfPages;
             for (int index = 0; index < len; index++) {
@@ -96,6 +161,8 @@ public class InputAndOutput {
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
             s = null;
+        } catch (ClassNotFoundException exc) {
+            throw new ClassNotFoundException(exc.getMessage());
         }
 
         if (s == null) {
@@ -105,7 +172,7 @@ public class InputAndOutput {
         return s;
     }
 
-    public static Seriesable deserializeSeriesable(InputStream in) throws NullSeriesableObjectException {
+    public static Seriesable deserializeSer(InputStream in) throws NullSeriesableObjectException {
         Seriesable s;
 
         try {
@@ -122,4 +189,80 @@ public class InputAndOutput {
 
         return s;
     }
+    // endregion
+
+    // region считывание массива
+    public static Seriesable[] inputBytesAsSerArr(InputStream in) throws NullSeriesableObjectException, ClassNotFoundException {
+        final int len = getLenOfSerArrFromBytes(in);
+        Seriesable[] sArr = new Seriesable[len];
+
+        for (int index = 0; index < len; ++index) {
+            sArr[index] = inputBytesAsSer(in);
+        }
+
+        return sArr;
+    }
+
+    private static int getLenOfSerArrFromBytes(InputStream in) {
+        int len = -1;
+
+        DataInputStream dataInputter = new DataInputStream(in);
+        try {
+            len = dataInputter.readInt();
+            if (len == -1) {
+                throw new IOException("ошибка: не удалось считать длину массива из байтвого потока");
+            }
+        } catch (IOException exc) {
+            System.out.println(exc.getMessage());
+        }
+
+        return len;
+    }
+
+    public static Seriesable[] readTextAsSerArr(Reader in) throws NullSeriesableObjectException, ClassNotFoundException {
+        final int len = getLenOfSerArrFromText(in);
+        Seriesable[] sArr = new Seriesable[len];
+
+        for (int index = 0; index < len; ++index) {
+            sArr[index] = readTextAsSer(in);
+        }
+
+        return sArr;
+    }
+
+    private static int getLenOfSerArrFromText(Reader in) {
+        int len = -1;
+
+        BufferedReader reader = new BufferedReader(in);
+        try {
+            len = Integer.parseInt(reader.readLine());
+            reader.readLine();
+            if (len == -1) {
+                throw new IOException("ошибка: не удалось считать длину массива из байтвого потока");
+            }
+        } catch (Exception exc) {
+            System.out.println(exc.getMessage());
+        }
+
+        return len;
+    }
+
+    public static Seriesable[] deserializeSerArr(InputStream in) throws NullSeriesableObjectException {
+        Seriesable[] sArr;
+
+        try {
+            ObjectInputStream deserializer = new ObjectInputStream(in);
+            sArr = (Seriesable[]) deserializer.readObject();
+        } catch (IOException | ClassNotFoundException exc) {
+            System.out.println(exc.getMessage());
+            sArr = null;
+        }
+
+        if (sArr == null) {
+            throw new NullSeriesableObjectException("не удалось считать массив Seriesable[]");
+        }
+
+        return sArr;
+    }
+    // endregion
 }

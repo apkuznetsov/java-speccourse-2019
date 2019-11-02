@@ -1,517 +1,227 @@
 package com.company;
 
-import com.company.Exceptions.IllegalIndexException;
 import com.company.Exceptions.NullSeriesableObjectException;
-import com.company.Series.ArticlesSet;
-import com.company.Series.BooksSet;
 import com.company.Series.Seriesable;
 
-import java.io.*;
 import java.util.Scanner;
 
-import static com.company.InputAndOutput.*;
-import static com.company.Series.Series.*;
+import static com.company.MenuPrints.*;
 
 class Menu {
-    static final String line = "-------------------------------------------------------------------------------\n";
-    private static final String bytesFile = "seriesableAsBytes.bin";
-    private static final String textFile = "seriesableAsText.txt";
-    private static final String serializedFile = "seriesableSerialized.bin";
-
-    // region prints
-    static void printRed(String str) {
-        System.out.print("\u001B[31m" + str + "\u001B[0m");
-    }
-
-    static void printRedLn(String str) {
-        System.out.println("\u001B[31m" + str + "\u001B[0m");
-    }
-
-    static void printGreen(String str) {
-        System.out.print("\u001B[32m" + str + "\u001B[0m");
-    }
-
-    static void printGreenLn(String str) {
-        System.out.println("\u001B[32m" + str + "\u001B[0m");
-    }
-
-    static void printTask(String task) {
-        System.out.print('\n' + task + '\n' + line);
-    }
-
-    static void printExit() {
-        System.out.print('\n' + "нажмите Enter, чтобы выйти в меню ... ");
-        Scanner scan = new Scanner(System.in);
-        scan.nextLine();
-    }
-    // endregion
-
-    // region gets
-    static Seriesable[] printGetSeriesableArr() {
-        int len;
-
-        do {
-            len = printGetInt();
-
-            if (len < Seriesable.MIN_LEN_OF_ARR) {
-                printRedLn("массив должен вмещать хотя бы" + Seriesable.MIN_LEN_OF_ARR + " элемент/-ов");
-            } else if (len > Seriesable.MAX_LEN_OF_ARR) {
-                printRedLn("слишком большая база");
-            } else {
-                Seriesable[] seriesableArr = new Seriesable[len];
-                printGreenLn("массив размером в " + len + " элементов успешно создан");
-                return seriesableArr;
-            }
-        } while (true);
-    }
-
-    private static int printGetInt() {
-        int num;
+    public static void main(String[] args) {
+        Seriesable[] sArr = null; // сборник серий (сборник сборников)
+        Seriesable s = null;
 
         Scanner scan = new Scanner(System.in);
-        String str;
+        String menuItem;
 
         do {
-            System.out.print("введите число ... ");
-            str = scan.nextLine();
-
-            try {
-                num = Integer.parseInt(str);
-                break;
-            } catch (NumberFormatException exc) {
-                printRedLn("ошибка: введённая строка не является числом");
-            }
-        } while (true);
-
-        return num;
-    }
-
-    private static int printGetIndex(int maxIndex) {
-        int index;
-
-        Scanner scan = new Scanner(System.in);
-        String str;
-
-        do {
-            System.out.print("введите индекс ... ");
-            str = scan.nextLine();
-            System.out.println();
-
-            try {
-                index = Integer.parseInt(str);
-                if (index < 0 || index > maxIndex) {
-                    throw new IllegalArgumentException();
-                }
-                break;
-            } catch (IllegalIndexException exc) {
-                printRedLn("ошибка: неверный индекс");
-            } catch (Exception exc) {
-                printRedLn("ошибка: введённая строка не является числом");
-            }
-        } while (true);
-
-        return index;
-    }
-    // endregion
-
-    static void printDbAsTitlesOfEls(Seriesable[] db) {
-        System.out.print("база данных: ");
-        if (db == null) {
-            System.out.println("не задана");
-        } else {
-            System.out.print('\n' + line);
-
-            for (int i = 0; i < db.length; i++) {
-                System.out.print("[" + i + "] ");
-                if (db[i] == null) {
-                    System.out.println("элемент не задан");
-                } else {
-                    System.out.println('«' + db[i].getTitle() + '»');
-                }
-            }
-        }
-    }
-
-    static void printSetElOfDb(Seriesable[] db) {
-        if (db == null) {
-            printRedLn("операция невозможна: база данных не задана");
-        } else {
-            System.out.println("задайте индекс элемента,\n" +
-                    "который хотите изменить\n" +
-                    "(нумерация начинается с нуля):");
-            int index = printGetIndex(db.length - 1);
-
-            Scanner scan = new Scanner(System.in);
-            String str;
-
-            System.out.print("задание элемента под индексом " + index + '\n' + line);
-            do {
-                System.out.print("выберите тип элемента\n" +
-                        line +
-                        "1 -- ArticleSeries\n" +
-                        "2 -- BookSeries\n" +
-                        line +
-                        "выбор ... ");
-                str = scan.nextLine();
-                System.out.println();
-
-                if (str.equals("1")) {
-                    db[index] = printGetAndSetArticlesSeries();
-                    break;
-                } else if (str.equals("2")) {
-                    db[index] = printGetAndSetBooksSeries();
-                    break;
-                } else {
-                    printRedLn("ошибка: неверный пункт меню");
-                }
-            } while (true);
-        }
-    }
-
-    private static ArticlesSet printGetAndSetArticlesSeries() {
-        System.out.print("введите название сборника ................................. ");
-        Scanner scan = new Scanner(System.in);
-        String title = scan.nextLine();
-
-        int numOfArticles = printGetNumOfElsInSeries();
-        int numOfAbstractPages = printGetNumOfStartPages();
-        ArticlesSet as = new ArticlesSet(title, numOfAbstractPages, numOfArticles);
-        printGreenLn("сборник успешно создан");
-        System.out.println();
-
-        System.out.print("заполните сборник названиями статей и их количеством страниц\n" + line);
-        printSetElsOfSeries(as);
-
-        return as;
-    }
-
-    private static BooksSet printGetAndSetBooksSeries() {
-        System.out.print("введите название сборника ........................... ");
-        Scanner scan = new Scanner(System.in);
-        String title = scan.nextLine();
-
-        int numOfBooks = printGetNumOfElsInSeries();
-        int numOfPrefacePages = printGetNumOfStartPages();
-        BooksSet bs = new BooksSet(title, numOfPrefacePages, numOfBooks);
-        printGreenLn("сборник успешно создан");
-        System.out.println();
-
-        System.out.print("заполните сборник названиями книг и их количеством страниц\n" + line);
-        printSetElsOfSeries(bs);
-
-        return bs;
-    }
-
-    private static int printGetNumOfElsInSeries() {
-        int num;
-
-        do {
-            System.out.print("задание количества элементов в серии: ... ");
-            num = printGetInt();
-
-            if (num < Seriesable.MIN_NUM_OF_ELS_OF_SERIES) {
-                printRedLn("серия должна содержать хотя бы " + Seriesable.MIN_NUM_OF_ELS_OF_SERIES + " элемент/-та/-ов");
-            } else if (num > Seriesable.MAX_NUM_OF_ELS_OF_SERIES) {
-                printRedLn("слишком большая серия");
-            } else {
-                return num;
-            }
-        } while (true);
-    }
-
-    private static int printGetNumOfStartPages() {
-        int num;
-
-        do {
-            System.out.print("задание количества страниц в предисловии/аннотации каждого элемента серии: ");
-            num = printGetInt();
-
-            if (num < Seriesable.MIN_NUM_OF_START_PAGES) {
-                printRedLn("предисловие/аннотация должно/-на быть хотя бы в " + Seriesable.MIN_NUM_OF_START_PAGES + " страницу/-ц");
-            } else if (num > Seriesable.MAX_NUM_OF_START_PAGES) {
-                printRedLn("слишком много страниц в предисловии/аннотации");
-            } else {
-                return num;
-            }
-        } while (true);
-    }
-
-    private static void printSetElsOfSeries(Seriesable s) {
-        if (s == null) {
-            printRedLn("операция невозможна: серия не задана");
-        } else {
-            for (int i = 0; i < s.getNumOfEls(); i++) {
-                System.out.print("элемент под индексом  " + "[" + i + "]" + '\n' + line);
-                try {
-                    if (!printSetElOfSeries(s, i)) {
-                        i--;
-                    }
-                } catch (Exception exc) {
-                    printRedLn(exc.getMessage());
-                } finally {
-                    System.out.println();
-                }
-            }
-        }
-    }
-
-    private static boolean printSetElOfSeries(Seriesable s, int index) throws Exception {
-        if (s == null) {
-            throw new UnsupportedOperationException("операция невозможна: серия не задана");
-        } else {
-            try {
-                System.out.print("название ............................... ");
-                Scanner scan = new Scanner(System.in);
-                String title = scan.nextLine();
-                s.setEl(index, title);
-
-                System.out.print("количество страниц ... ");
-                int numOfPages = printGetNumOfPages();
-                s.setNumOfPagesOfEl(index, numOfPages);
-
-                return true;
-            } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException exc) {
-                printRed(exc.getMessage());
-                return false;
-            } catch (Exception exc) {
-                throw new Exception(exc.getMessage());
-            }
-        }
-    }
-
-    private static int printGetNumOfPages() {
-        int num;
-
-        do {
-            num = printGetInt();
-            if (num < Seriesable.MIN_NUM_OF_PAGES_OF_EL) {
-                printRedLn("ошибка: должна/-но быть хотя бы " + Seriesable.MIN_NUM_OF_PAGES_OF_EL + " страница/-цы/-ц");
-            } else if (num > Seriesable.MAX_NUM_OF_PAGES_OF_EL) {
-                printRedLn("слишком много страниц");
-            } else {
-                return num;
-            }
-        } while (true);
-    }
-
-    static Seriesable printGetAndSetSeriesable() {
-        Seriesable s;
-
-        Scanner scan = new Scanner(System.in);
-        String str;
-
-        do {
-            System.out.print("выберите тип элемента\n" +
-                    line +
-                    "1 -- ArticleSeries\n" +
-                    "2 -- BookSeries\n" +
-                    line +
+            System.out.print(LINE +
+                    "РАБОТА С БАЗОЙ:\n" +
+                    LINE +
+                    " 1 -- вывести полную информацию базы\n" +
+                    LINE +
+                    " 2 -- создать базу\n" +
+                    " 3 -- задание элемента базы\n" +
+                    LINE +
+                    " 4 -- найти в базе объекты,\n" +
+                    "      функциональный метод которых возвращают одинаковый результат,\n" +
+                    "      поместить такие объекты в массив\n" +
+                    " 5 -- разбить базу на два массива,\n" +
+                    "      в которых будут храниться однотипные элементы\n" +
+                    LINE +
+                    " 6 -- считать базу из байтового потока\n" +
+                    " 7 -- считать базу из текстового потока\n" +
+                    " 8 -- десериализовать базу\n" +
+                    LINE +
+                    " 9 -- записать базу в байтовый поток\n" +
+                    "10 -- записать базу в символьный поток\n" +
+                    "11 -- сериализовать базу\n" +
+                    LINE +
+                    LINE +
+                    "РАБОТА С ОБЪЕКТОМ:\n" +
+                    LINE +
+                    "12 -- показать содержимое объекта\n" +
+                    LINE +
+                    "13 -- создать и заполнить объект Seriesable\n" +
+                    "14 -- считать из байтового потока\n" +
+                    "15 -- считать из текстового потока\n" +
+                    "16 -- десериализовать объект\n" +
+                    LINE +
+                    "17 -- записать объект в байтовый поток\n" +
+                    "18 -- записать объект в символьный поток\n" +
+                    "19 -- сериализовать объект\n" +
+                    LINE +
+                    LINE +
+                    "ДЛЯ ТЕСТИРОВАНИЯ:\n" +
+                    LINE +
+                    "-1 -- создать и заполнить базу автоматически\n" +
+                    "-2 -- создать и заполнить базу автоматически так,\n" +
+                    "      чтобы были элементы,\n" +
+                    "      у которых функциональные методы возвращают одинаковый результат\n" +
+                    LINE +
+                    "-3 -- создать и заполнить объект Seriesable автоматически\n" +
+                    LINE +
+                    "0 -- выйти\n" +
+                    LINE +
                     "выбор ... ");
-            str = scan.nextLine();
+            menuItem = scan.nextLine();
+
+            switch (menuItem) {
+                // region РАБОТА С БАЗОЙ
+                case "1":
+                    printTask(" 1 -- вывести полную информацию базы");
+                    printSerArr(sArr);
+                    break;
+
+                case "2":
+                    printTask(" 2 -- создать базу");
+                    System.out.print("задание размера базы: ");
+                    sArr = printGetSerArr();
+                    break;
+
+                case "3":
+                    printTask(" 3 -- задание элемента базы");
+                    printSerArrAsTitlesOfEls(sArr);
+                    System.out.println();
+                    printSetElOfArr(sArr);
+                    break;
+
+                case "4":
+                    printTask(" 4 -- найти в базе объекты,\n" +
+                            "      функциональный метод которых возвращают одинаковый результат,\n" +
+                            "      поместить такие объекты в массив");
+                    printGetArrWithTwoElsWithSameSumOfPagesWithoutStart(sArr);
+                    break;
+
+                case "5":
+                    printTask(" 5 -- разбить базу на два массива,\n" +
+                            "      в которых будут храниться однотипные элементы");
+                    printSplitArrIntoTwoArticlesAndBooksArrs(sArr);
+                    break;
+
+                case "6":
+                    printTask(" 6 -- считать базу из байтового потока");
+                    try {
+                        sArr = printInputBytesAsSerArrAndGet();
+                    } catch (NullSeriesableObjectException exc) {
+                        printRedLn(exc.getMessage());
+                    }
+                    break;
+
+                case "7":
+                    printTask(" 7 -- считать базу из текстового потока");
+                    try {
+                        sArr = printReadTextAsSerArrAndGet();
+                    } catch (NullSeriesableObjectException exc) {
+                        printRedLn(exc.getMessage());
+                    }
+                    break;
+
+                case "8":
+                    printTask(" 8 -- десериализовать базу");
+                    try {
+                        sArr = printDeserializeSerArrAndGet();
+                    } catch (NullSeriesableObjectException exc) {
+                        printRedLn(exc.getMessage());
+                    }
+                    break;
+
+                case "9":
+                    printTask(" 9 -- записать базу в байтовый поток");
+                    printOutputSerArrAsBytes(sArr);
+                    break;
+
+                case "10":
+                    printTask("10 -- записать базу в символьный поток");
+                    printWriteSerArrAsText(sArr);
+                    break;
+
+                case "11":
+                    printTask("11 -- сериализовать базу");
+                    printSerializeSerArr(sArr);
+                    break;
+                // endregion
+
+                // region РАБОТА С ОБЪЕКТОМ
+                case "12":
+                    printTask("12 -- показать содержимое объекта");
+                    System.out.println(s);
+                    break;
+
+                case "13":
+                    printTask("13 -- создать и заполнить объект Seriesable");
+                    s = printGetAndSetSer();
+                    break;
+
+                case "14":
+                    printTask("14 -- считать из байтового потока");
+                    try {
+                        s = printInputBytesAsSerAndGet();
+                    } catch (NullSeriesableObjectException exc) {
+                        printRedLn(exc.getMessage());
+                    }
+                    break;
+
+                case "15":
+                    printTask("15 -- считать из текстового потока");
+                    try {
+                        s = printReadTextAsSerAndGet();
+                    } catch (NullSeriesableObjectException exc) {
+                        printRedLn(exc.getMessage());
+                    }
+                    break;
+
+                case "16":
+                    printTask("16 -- десериализовать объект");
+                    try {
+                        s = printDeserializeSerAndGet();
+                    } catch (NullSeriesableObjectException exc) {
+                        printRedLn(exc.getMessage());
+                    }
+                    break;
+
+                case "17":
+                    printTask("17 -- записать объект в байтовый поток");
+                    printOutputSerAsBytes(s);
+                    break;
+
+                case "18":
+                    printTask("18 -- записать объект в текстовый поток");
+                    printWriteSerAsText(s);
+                    break;
+
+                case "19":
+                    printTask("19 -- сериализовать объект");
+                    printSerializeSer(s);
+                    break;
+                // endregion
+
+                // region ДЛЯ ТЕСТИРОВАНИЯ
+                case "-1":
+                    printTask("-1 -- создать и заполнить базу автоматически");
+                    sArr = Testing.createAndFillInDbWithFiveElsAutomatically();
+                    break;
+
+                case "-2":
+                    printTask("-2 -- создать и заполнить базу автоматически так,\n" +
+                            "      чтобы были элементы,\n" +
+                            "      у которых функциональные методы возвращают одинаковый результат");
+                    sArr = Testing.createAndFillInDbWithFiveElsAutomatically();
+                    Testing.setTwoSerWithSameSumOfPagesWithoutStart(sArr);
+                    break;
+
+                case "-3":
+                    printTask("-3 -- создать и заполнить объект Seriesable автоматически");
+                    s = Testing.createAndFillSerAutomatically();
+                    break;
+                // endregion
+
+                default:
+                    break;
+            }
+            printExit();
             System.out.println();
-
-            if (str.equals("1")) {
-                s = printGetAndSetArticlesSeries();
-                break;
-            } else if (str.equals("2")) {
-                s = printGetAndSetBooksSeries();
-                break;
-            } else {
-                printRedLn("ошибка: неверный пункт меню");
-            }
-        } while (true);
-
-        return s;
+        } while (!menuItem.equals("0"));
     }
-
-    static void printDb(Seriesable[] db) {
-        System.out.print("база данных: ");
-        if (db == null) {
-            System.out.println("не задана");
-        } else {
-            System.out.print('\n' + line);
-
-            for (int i = 0; i < db.length; i++) { // по элементам БД
-                System.out.print("[" + i + "] ");
-                printSeries(db[i]);
-                System.out.print(line + line);
-            }
-        }
-    }
-
-    private static void printSeries(Seriesable s) {
-        if (s == null) {
-            printRedLn("серия не задана");
-        } else {
-            System.out.println('«' + s.getTitle() + '»');
-            System.out.print(line);
-            System.out.println(s);
-        }
-    }
-
-    private static void printElsOfSeries(Seriesable s) {
-        if (s == null) {
-            System.out.println("серия не задана");
-        } else {
-            for (int i = 0; i < s.getNumOfEls(); i++) {
-                System.out.print(i + ") ");
-
-                if (s.getEl(i) == null) {
-                    printRedLn("элемент на задан");
-                } else {
-                    System.out.println(s.getEl(i) +
-                            " (кол-во страниц -- " + s.getNumOfPages(i) + ')');
-                }
-            }
-        }
-    }
-
-    // region деление базы
-    static void printGetArrWithTwoElsWithSameSumOfPagesWithoutStart(Seriesable[] s) {
-        Seriesable[] arr;
-
-        try {
-            arr = getArrWithTwoElsWithSameSumOfPagesWithoutStart(s);
-            printGreenLn("база данных успешно разделена");
-            System.out.println();
-
-            printDb(arr);
-        } catch (Exception exc) {
-            printRedLn(exc.getMessage());
-        }
-    }
-
-    static void printSplitDbIntoTwoArticlesAndBooksArrs(Seriesable[] s) {
-        if (s == null) {
-            printRedLn("операция невозможна: база данных не задана");
-        } else {
-            try {
-                ArticlesSet[] as = getArticlesSeriesArrFromSeriesableArr(s);
-                BooksSet[] bs = getBooksSeriesArrFromSeriesableArr(s);
-                printGreenLn("база данных разбита на два массива, в которых хранятся однотипные элементы");
-                System.out.println();
-
-                printDb(as);
-                printDb(bs);
-            } catch (Exception exc) {
-                printRedLn(exc.getMessage());
-            }
-        }
-    }
-    // endregion
-
-    // region запись
-    static void printOutputSeriesableAsBytes(Seriesable s) {
-        if (s == null) {
-            printRedLn("операция невозможна: объект не задан");
-        } else {
-            try {
-                FileOutputStream fileOutputter = new FileOutputStream(bytesFile);
-                InputAndOutput.outputSeriesableAsBytes(s, fileOutputter);
-                fileOutputter.flush();
-                fileOutputter.close();
-
-                printGreenLn("объект успешно записан в байтовый поток");
-            } catch (IOException exc) {
-                printRedLn(exc.getMessage());
-            }
-        }
-    }
-
-    static void printWriteSeriesableAsText(Seriesable s) {
-        if (s == null) {
-            printRedLn("операция невозможна: объект не задан");
-        } else {
-            try {
-                FileWriter fileWriter = new FileWriter(textFile);
-                InputAndOutput.writeSeriesableAsText(s, fileWriter);
-                fileWriter.flush();
-                fileWriter.close();
-
-                printGreenLn("объект успешно записан в текстовый поток");
-            } catch (IOException exc) {
-                printRedLn(exc.getMessage());
-            }
-        }
-    }
-
-    static void printSerializeSeriesable(Seriesable s) {
-        if (s == null) {
-            printRedLn("операция невозможна: объект не задан");
-        } else {
-            try {
-                FileOutputStream fileOutputter = new FileOutputStream(serializedFile);
-                InputAndOutput.serializeSeriesable(s, fileOutputter);
-                fileOutputter.flush();
-                fileOutputter.close();
-
-                printGreenLn("объект успешно сериализован");
-            } catch (IOException exc) {
-                printRedLn(exc.getMessage());
-            }
-        }
-    }
-    // endregion
-
-    // region считывание
-    static Seriesable printInputBytesAsSeriesableAndGet() throws NullSeriesableObjectException {
-        Seriesable s = null;
-
-        try {
-            FileInputStream fileInputter = new FileInputStream(bytesFile);
-            s = inputBytesAsSeriesable(fileInputter);
-            fileInputter.close();
-
-            printGreenLn("объект успешно считан из байтового потока (файла)");
-        } catch (IOException | NullSeriesableObjectException exc) {
-            printRedLn(exc.getMessage());
-        }
-
-        if (s == null) {
-            throw new NullSeriesableObjectException("не удалось считать Seriesable");
-        }
-
-        return s;
-    }
-
-    static Seriesable printReadTextAsSeriesableAndGet() throws NullSeriesableObjectException {
-        Seriesable s = null;
-
-        try {
-            FileReader fileReader = new FileReader(textFile);
-            s = readTextAsSeriesable(fileReader);
-            fileReader.close();
-
-            printGreenLn("объект успешно считан из тектового потока (файла)");
-        } catch (IOException | NullSeriesableObjectException exc) {
-            printRedLn(exc.getMessage());
-        }
-
-        if (s == null) {
-            throw new NullSeriesableObjectException("не удалось считать Seriesable");
-        }
-
-        return s;
-    }
-
-    static Seriesable printDeserializeSeriesableAndGet() throws NullSeriesableObjectException {
-        Seriesable s = null;
-
-        try {
-            FileInputStream fileInputter = new FileInputStream(serializedFile);
-            s = deserializeSeriesable(fileInputter);
-            fileInputter.close();
-
-            printGreenLn("объект успешно десериализован (из файла)");
-        } catch (IOException | NullSeriesableObjectException exc) {
-            printRedLn(exc.getMessage());
-        }
-
-        if (s == null) {
-            throw new NullSeriesableObjectException("не удалось считать Seriesable");
-        }
-
-        return s;
-    }
-    // endregion
 }

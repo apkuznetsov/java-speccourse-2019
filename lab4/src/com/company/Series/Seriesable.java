@@ -7,8 +7,8 @@ public interface Seriesable {
     int MIN_LEN_OF_ARR = 1;
     int MAX_LEN_OF_ARR = 5;
 
-    int MIN_NUM_OF_ELS_OF_SERIES = 1;
-    int MAX_NUM_OF_ELS_OF_SERIES = 5;
+    int MIN_NUM_OF_ELS_OF_SER = 1;
+    int MAX_NUM_OF_ELS_OF_SER = 5;
 
     int MIN_NUM_OF_START_PAGES = 1;
     int MAX_NUM_OF_START_PAGES = 100;

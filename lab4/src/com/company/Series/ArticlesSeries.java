@@ -4,13 +4,13 @@ import com.company.Exceptions.IllegalIndexException;
 
 import java.io.*;
 
-public class ArticlesSet implements Seriesable, Serializable {
+public class ArticlesSeries implements Seriesable, Serializable {
     private String title;
     private int numOfAbstractPages;
     private String[] articles;
     private int[] numsOfPages;
 
-    public ArticlesSet(String title, int numOfAbstractPages, int numOfArticles) {
+    public ArticlesSeries(String title, int numOfAbstractPages, int numOfArticles) {
         this.title = title;
         this.numOfAbstractPages = numOfAbstractPages;
         articles = new String[numOfArticles];
@@ -104,7 +104,7 @@ public class ArticlesSet implements Seriesable, Serializable {
         sb.append("кол-во страниц в аннотации ........................ ").append(numOfAbstractPages).append('\n');
         sb.append("общей кол-во страниц в сборнике без аннотаций ..... ").append(getSumOfPagesWithoutStart()).append('\n');
         sb.append("кол-во элементов .................................. ").append(articles.length).append('\n');
-        sb.append("тип объекта........................................ ").append(getClass()).append('\n');
+        sb.append("тип объекта........................................ ").append(getClass().getName()).append('\n');
         sb.append("---------------------------------------------------\n");
 
         appendArticlesInfo(sb);
@@ -126,39 +126,39 @@ public class ArticlesSet implements Seriesable, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        boolean isSeriesable = obj instanceof Seriesable;
+        boolean isSer = obj instanceof Seriesable;
 
-        if (isSeriesable) {
-            Seriesable anotherSeries = (Seriesable) obj;
+        if (isSer) {
+            Seriesable anotherSer = (Seriesable) obj;
 
-            if (this.title.equals(anotherSeries.getTitle()))
-                return areElsEqual(anotherSeries);
+            if (this.title.equals(anotherSer.getTitle()))
+                return areElsEqual(anotherSer);
         }
 
         return false;
     }
 
-    private boolean areElsEqual(Seriesable anotherSeries) {
-        if (!areNumOfStartPagesAndElsEqual(anotherSeries)) {
+    private boolean areElsEqual(Seriesable anotherSer) {
+        if (!areNumOfStartPagesAndElsEqual(anotherSer)) {
             return false;
         }
 
         for (int i = 0; i < articles.length; i++) {
-            if (!isElEqual(i, anotherSeries))
+            if (!isElEqual(i, anotherSer))
                 return false;
         }
 
         return true;
     }
 
-    private boolean areNumOfStartPagesAndElsEqual(Seriesable anotherSeries) {
-        return this.getNumOfStartPages() == anotherSeries.getNumOfStartPages() &&
-                this.articles.length == anotherSeries.getNumOfEls();
+    private boolean areNumOfStartPagesAndElsEqual(Seriesable anotherSer) {
+        return this.getNumOfStartPages() == anotherSer.getNumOfStartPages() &&
+                this.articles.length == anotherSer.getNumOfEls();
     }
 
-    private boolean isElEqual(int index, Seriesable anotherSeries) {
-        return articles[index].equals(anotherSeries.getEl(index)) &&
-                numsOfPages[index] == anotherSeries.getNumOfPages(index);
+    private boolean isElEqual(int index, Seriesable anotherSer) {
+        return articles[index].equals(anotherSer.getEl(index)) &&
+                numsOfPages[index] == anotherSer.getNumOfPages(index);
     }
 
     @Override
@@ -172,6 +172,7 @@ public class ArticlesSet implements Seriesable, Serializable {
         DataOutputStream dataOutputter = new DataOutputStream(buffer);
 
         try {
+            dataOutputter.writeUTF(getClass().getName());
             dataOutputter.writeUTF(title);
             dataOutputter.writeInt(numOfAbstractPages);
             dataOutputter.writeInt(articles.length);
@@ -193,6 +194,9 @@ public class ArticlesSet implements Seriesable, Serializable {
         PrintWriter printer = new PrintWriter(buffer);
 
         try {
+            printer.println(getClass().getName());
+            printer.println();
+
             printer.println(title);
             printer.println();
 

@@ -1,12 +1,12 @@
 package com.company;
 
-import com.company.Series.ArticlesSet;
-import com.company.Series.BooksSet;
+import com.company.Series.ArticlesSeries;
+import com.company.Series.BooksSeries;
 import com.company.Series.Seriesable;
 
 import java.util.Random;
 
-import static com.company.Menu.printGreenLn;
+import static com.company.MenuPrints.printGreenLn;
 
 class Testing {
     // region titles
@@ -46,37 +46,37 @@ class Testing {
     // endregion
 
     static Seriesable[] createAndFillInDbWithFiveElsAutomatically() {
-        Seriesable[] db = createSeriesableArrWithFiveEls();
-        setElsInSeriesableArrWithFiveEls(db);
+        Seriesable[] sArr = createSerArrWithFiveEls();
+        setElsInSerArrWithFiveEls(sArr);
 
         printGreenLn("база успешно создана и заполнена");
 
-        return db;
+        return sArr;
     }
 
-    private static Seriesable[] createSeriesableArrWithFiveEls() {
+    private static Seriesable[] createSerArrWithFiveEls() {
         final int five = 5;
 
         Seriesable[] s = new Seriesable[five];
 
-        s[0] = getSeriesableWithRandGeneratedType(TITLE_1, getRandNumOfStartPages(), five);
-        s[1] = getSeriesableWithRandGeneratedType(TITLE_2, getRandNumOfStartPages(), five);
-        s[2] = getSeriesableWithRandGeneratedType(TITLE_3, getRandNumOfStartPages(), five);
-        s[3] = getSeriesableWithRandGeneratedType(TITLE_4, getRandNumOfStartPages(), five);
-        s[4] = getSeriesableWithRandGeneratedType(TITLE_5, getRandNumOfStartPages(), five);
+        s[0] = getSerWithRandGeneratedType(TITLE_1, getRandNumOfStartPages(), five);
+        s[1] = getSerWithRandGeneratedType(TITLE_2, getRandNumOfStartPages(), five);
+        s[2] = getSerWithRandGeneratedType(TITLE_3, getRandNumOfStartPages(), five);
+        s[3] = getSerWithRandGeneratedType(TITLE_4, getRandNumOfStartPages(), five);
+        s[4] = getSerWithRandGeneratedType(TITLE_5, getRandNumOfStartPages(), five);
 
         return s;
     }
 
-    private static Seriesable getSeriesableWithRandGeneratedType(String title, int numOfStartPages, int numOfEls) {
+    private static Seriesable getSerWithRandGeneratedType(String title, int numOfStartPages, int numOfEls) {
         Seriesable s;
 
         int choice = getRandInt(1, 2);
 
         if (choice == 1) {
-            s = new ArticlesSet(title, numOfStartPages, numOfEls);
+            s = new ArticlesSeries(title, numOfStartPages, numOfEls);
         } else {
-            s = new BooksSet(title, numOfStartPages, numOfEls);
+            s = new BooksSeries(title, numOfStartPages, numOfEls);
         }
 
         return s;
@@ -95,82 +95,82 @@ class Testing {
         return num;
     }
 
-    private static void setElsInSeriesableArrWithFiveEls(Seriesable[] db) {
+    private static void setElsInSerArrWithFiveEls(Seriesable[] sArr) {
         final int index0 = 0;
         final int index1 = 1;
         final int index2 = 2;
         final int index3 = 3;
         final int index4 = 4;
 
-        db[index0].setEl(index0, EL_1);
-        db[index0].setEl(index1, EL_2);
-        db[index0].setEl(index2, EL_3);
-        db[index0].setEl(index3, EL_4);
-        db[index0].setEl(index4, EL_5);
+        sArr[index0].setEl(index0, EL_1);
+        sArr[index0].setEl(index1, EL_2);
+        sArr[index0].setEl(index2, EL_3);
+        sArr[index0].setEl(index3, EL_4);
+        sArr[index0].setEl(index4, EL_5);
 
-        db[index1].setEl(index0, EL_6);
-        db[index1].setEl(index1, EL_7);
-        db[index1].setEl(index2, EL_8);
-        db[index1].setEl(index3, EL_9);
-        db[index1].setEl(index4, EL_10);
+        sArr[index1].setEl(index0, EL_6);
+        sArr[index1].setEl(index1, EL_7);
+        sArr[index1].setEl(index2, EL_8);
+        sArr[index1].setEl(index3, EL_9);
+        sArr[index1].setEl(index4, EL_10);
 
-        db[index2].setEl(index0, EL_11);
-        db[index2].setEl(index1, EL_12);
-        db[index2].setEl(index2, EL_13);
-        db[index2].setEl(index3, EL_14);
-        db[index2].setEl(index4, EL_15);
+        sArr[index2].setEl(index0, EL_11);
+        sArr[index2].setEl(index1, EL_12);
+        sArr[index2].setEl(index2, EL_13);
+        sArr[index2].setEl(index3, EL_14);
+        sArr[index2].setEl(index4, EL_15);
 
-        db[index3].setEl(index0, EL_16);
-        db[index3].setEl(index1, EL_17);
-        db[index3].setEl(index2, EL_18);
-        db[index3].setEl(index3, EL_19);
-        db[index3].setEl(index4, EL_20);
+        sArr[index3].setEl(index0, EL_16);
+        sArr[index3].setEl(index1, EL_17);
+        sArr[index3].setEl(index2, EL_18);
+        sArr[index3].setEl(index3, EL_19);
+        sArr[index3].setEl(index4, EL_20);
 
-        db[index4].setEl(index0, EL_21);
-        db[index4].setEl(index1, EL_22);
-        db[index4].setEl(index2, EL_23);
-        db[index4].setEl(index3, EL_24);
-        db[index4].setEl(index4, EL_25);
+        sArr[index4].setEl(index0, EL_21);
+        sArr[index4].setEl(index1, EL_22);
+        sArr[index4].setEl(index2, EL_23);
+        sArr[index4].setEl(index3, EL_24);
+        sArr[index4].setEl(index4, EL_25);
 
-        db[index0].setNumOfPagesOfEl(index0, getRandNumOfPages());
-        db[index0].setNumOfPagesOfEl(index1, getRandNumOfPages());
-        db[index0].setNumOfPagesOfEl(index2, getRandNumOfPages());
-        db[index0].setNumOfPagesOfEl(index3, getRandNumOfPages());
-        db[index0].setNumOfPagesOfEl(index4, getRandNumOfPages());
+        sArr[index0].setNumOfPagesOfEl(index0, getRandNumOfPages());
+        sArr[index0].setNumOfPagesOfEl(index1, getRandNumOfPages());
+        sArr[index0].setNumOfPagesOfEl(index2, getRandNumOfPages());
+        sArr[index0].setNumOfPagesOfEl(index3, getRandNumOfPages());
+        sArr[index0].setNumOfPagesOfEl(index4, getRandNumOfPages());
 
-        db[index1].setNumOfPagesOfEl(index0, getRandNumOfPages());
-        db[index1].setNumOfPagesOfEl(index1, getRandNumOfPages());
-        db[index1].setNumOfPagesOfEl(index2, getRandNumOfPages());
-        db[index1].setNumOfPagesOfEl(index3, getRandNumOfPages());
-        db[index1].setNumOfPagesOfEl(index4, getRandNumOfPages());
+        sArr[index1].setNumOfPagesOfEl(index0, getRandNumOfPages());
+        sArr[index1].setNumOfPagesOfEl(index1, getRandNumOfPages());
+        sArr[index1].setNumOfPagesOfEl(index2, getRandNumOfPages());
+        sArr[index1].setNumOfPagesOfEl(index3, getRandNumOfPages());
+        sArr[index1].setNumOfPagesOfEl(index4, getRandNumOfPages());
 
-        db[index2].setNumOfPagesOfEl(index0, getRandNumOfPages());
-        db[index2].setNumOfPagesOfEl(index1, getRandNumOfPages());
-        db[index2].setNumOfPagesOfEl(index2, getRandNumOfPages());
-        db[index2].setNumOfPagesOfEl(index3, getRandNumOfPages());
-        db[index2].setNumOfPagesOfEl(index4, getRandNumOfPages());
+        sArr[index2].setNumOfPagesOfEl(index0, getRandNumOfPages());
+        sArr[index2].setNumOfPagesOfEl(index1, getRandNumOfPages());
+        sArr[index2].setNumOfPagesOfEl(index2, getRandNumOfPages());
+        sArr[index2].setNumOfPagesOfEl(index3, getRandNumOfPages());
+        sArr[index2].setNumOfPagesOfEl(index4, getRandNumOfPages());
 
-        db[index3].setNumOfPagesOfEl(index0, getRandNumOfPages());
-        db[index3].setNumOfPagesOfEl(index1, getRandNumOfPages());
-        db[index3].setNumOfPagesOfEl(index2, getRandNumOfPages());
-        db[index3].setNumOfPagesOfEl(index3, getRandNumOfPages());
-        db[index3].setNumOfPagesOfEl(index4, getRandNumOfPages());
+        sArr[index3].setNumOfPagesOfEl(index0, getRandNumOfPages());
+        sArr[index3].setNumOfPagesOfEl(index1, getRandNumOfPages());
+        sArr[index3].setNumOfPagesOfEl(index2, getRandNumOfPages());
+        sArr[index3].setNumOfPagesOfEl(index3, getRandNumOfPages());
+        sArr[index3].setNumOfPagesOfEl(index4, getRandNumOfPages());
 
-        db[index4].setNumOfPagesOfEl(index0, getRandNumOfPages());
-        db[index4].setNumOfPagesOfEl(index1, getRandNumOfPages());
-        db[index4].setNumOfPagesOfEl(index2, getRandNumOfPages());
-        db[index4].setNumOfPagesOfEl(index3, getRandNumOfPages());
-        db[index4].setNumOfPagesOfEl(index4, getRandNumOfPages());
+        sArr[index4].setNumOfPagesOfEl(index0, getRandNumOfPages());
+        sArr[index4].setNumOfPagesOfEl(index1, getRandNumOfPages());
+        sArr[index4].setNumOfPagesOfEl(index2, getRandNumOfPages());
+        sArr[index4].setNumOfPagesOfEl(index3, getRandNumOfPages());
+        sArr[index4].setNumOfPagesOfEl(index4, getRandNumOfPages());
     }
 
     private static int getRandNumOfPages() {
         return getRandInt(Seriesable.MIN_NUM_OF_PAGES_OF_EL, Seriesable.MAX_NUM_OF_PAGES_OF_EL);
     }
 
-    static Seriesable createAndFillSeriesableAutomatically() {
+    static Seriesable createAndFillSerAutomatically() {
         Seriesable s;
 
-        s = getSeriesableWithRandGeneratedType(TITLE_1, getRandNumOfStartPages(), 5);
+        s = getSerWithRandGeneratedType(TITLE_1, getRandNumOfStartPages(), 5);
 
         s.setEl(0, EL_1);
         s.setEl(1, EL_2);
@@ -189,20 +189,20 @@ class Testing {
         return s;
     }
 
-    static void setTwoSeriesableWithSameSumOfPagesWithoutStart(Seriesable[] s) {
-        int lastIndex = s.length - 1;
+    static void setTwoSerWithSameSumOfPagesWithoutStart(Seriesable[] sArr) {
+        int lastIndex = sArr.length - 1;
 
         int firstIndex = getRandInt(0, lastIndex);
         int secondIndex = getRandInt(0, lastIndex);
 
-        Seriesable firstSeriesable = s[firstIndex];
-        Seriesable secondSeriesable = s[secondIndex];
+        Seriesable s1 = sArr[firstIndex];
+        Seriesable s2 = sArr[secondIndex];
 
         int sameNumOfPages;
 
-        for (int i = 0; i < firstSeriesable.getNumOfEls(); i++) {
-            sameNumOfPages = firstSeriesable.getNumOfPages(i);
-            secondSeriesable.setNumOfPagesOfEl(i, sameNumOfPages);
+        for (int i = 0; i < s1.getNumOfEls(); i++) {
+            sameNumOfPages = s1.getNumOfPages(i);
+            s2.setNumOfPagesOfEl(i, sameNumOfPages);
         }
 
         printGreenLn("база успешно создана и заполнена");
