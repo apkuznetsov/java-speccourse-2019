@@ -66,7 +66,6 @@ public class Main {
                     printTask(" 2 -- задание элемента базы");
                     printDbAsTitlesOfEls(db);
                     System.out.println();
-
                     printSetElOfDb(db);
                     break;
 

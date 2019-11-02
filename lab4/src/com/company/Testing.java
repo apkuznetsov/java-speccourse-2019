@@ -1,12 +1,14 @@
 package com.company;
 
-import com.company.Series.*;
+import com.company.Series.ArticlesSet;
+import com.company.Series.BooksSet;
+import com.company.Series.Seriesable;
 
 import java.util.Random;
 
-import static com.company.Menu.*;
+import static com.company.Menu.printGreenLn;
 
-public class Testing {
+class Testing {
     // region titles
     private static final String TITLE_1 = "Каталог лучших услуг в географическом регионе";
     private static final String TITLE_2 = "Список лучших рассказов 1913 года";

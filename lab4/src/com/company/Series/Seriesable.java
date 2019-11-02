@@ -1,6 +1,7 @@
 package com.company.Series;
 
-import java.io.*;
+import java.io.OutputStream;
+import java.io.Writer;
 
 public interface Seriesable {
     int MIN_LEN_OF_ARR = 1;
@@ -17,17 +18,17 @@ public interface Seriesable {
 
     String getTitle();
 
+    void setTitle(String title);
+
     int getNumOfStartPages();
+
+    void setNumOfStartPages(int num);
 
     int getNumOfEls();
 
     String getEl(int index);
 
     int getNumOfPages(int index);
-
-    void setTitle(String title);
-
-    void setNumOfStartPages(int num);
 
     void setEl(int index, String el);
 

@@ -22,13 +22,30 @@ public class BooksSet implements Seriesable, Serializable {
         return title;
     }
 
+    // region set
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public int getNumOfStartPages() {
         return numOfPrefacePages;
+    }
+
+    public void setNumOfStartPages(int num) {
+        if (num < Seriesable.MIN_NUM_OF_START_PAGES) {
+            throw new IllegalArgumentException("неверное число страниц");
+        }
+        if (num > Seriesable.MAX_NUM_OF_START_PAGES) {
+            throw new IllegalArgumentException("слишком большое число страниц");
+        }
+
+        numOfPrefacePages = num;
     }
 
     public int getNumOfEls() {
         return books.length;
     }
+    // endregion
 
     public String getEl(int index) {
         if (index < 0 || index >= books.length) {
@@ -44,23 +61,6 @@ public class BooksSet implements Seriesable, Serializable {
         }
 
         return numsOfPages[index];
-    }
-    // endregion
-
-    // region set
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setNumOfStartPages(int num) {
-        if (num < Seriesable.MIN_NUM_OF_START_PAGES) {
-            throw new IllegalArgumentException("неверное число страниц");
-        }
-        if (num > Seriesable.MAX_NUM_OF_START_PAGES) {
-            throw new IllegalArgumentException("слишком большое число страниц");
-        }
-
-        numOfPrefacePages = num;
     }
 
     public void setEl(int index, String el) {
@@ -182,10 +182,7 @@ public class BooksSet implements Seriesable, Serializable {
             }
 
             dataOutputter.flush();
-            dataOutputter.close();
-
             buffer.flush();
-            buffer.close();
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
         }
@@ -212,10 +209,7 @@ public class BooksSet implements Seriesable, Serializable {
             }
 
             printer.flush();
-            printer.close();
-
             buffer.flush();
-            buffer.close();
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
         }

@@ -1,7 +1,8 @@
 package com.company;
 
-import com.company.Exceptions.*;
-import com.company.Series.*;
+import com.company.Exceptions.NullSeriesableObjectException;
+import com.company.Series.BooksSet;
+import com.company.Series.Seriesable;
 
 import java.io.*;
 
@@ -20,7 +21,6 @@ public class InputAndOutput {
             ObjectOutputStream serializer = new ObjectOutputStream(out);
             serializer.writeObject(s);
             serializer.flush();
-            serializer.close();
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
         }

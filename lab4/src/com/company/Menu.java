@@ -1,15 +1,18 @@
 package com.company;
 
-import com.company.Series.*;
-import com.company.Exceptions.*;
-
-import static com.company.Series.Series.*;
-import static com.company.InputAndOutput.*;
+import com.company.Exceptions.IllegalIndexException;
+import com.company.Exceptions.NullSeriesableObjectException;
+import com.company.Series.ArticlesSet;
+import com.company.Series.BooksSet;
+import com.company.Series.Seriesable;
 
 import java.io.*;
 import java.util.Scanner;
 
-public class Menu {
+import static com.company.InputAndOutput.*;
+import static com.company.Series.Series.*;
+
+class Menu {
     static final String line = "-------------------------------------------------------------------------------\n";
     private static final String bytesFile = "seriesableAsBytes.bin";
     private static final String textFile = "seriesableAsText.txt";
