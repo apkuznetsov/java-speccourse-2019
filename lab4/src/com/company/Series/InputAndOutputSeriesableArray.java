@@ -17,9 +17,12 @@ public class InputAndOutputSeriesableArray {
     }
 
     private static void outputLenOfSerArrAsBytes(Seriesable[] sArr, OutputStream out) {
+        BufferedOutputStream buffer;
+        DataOutputStream dataOutputter;
+
         try {
-            BufferedOutputStream buffer = new BufferedOutputStream(out);
-            DataOutputStream dataOutputter = new DataOutputStream(buffer);
+            buffer = new BufferedOutputStream(out);
+            dataOutputter = new DataOutputStream(buffer);
 
             dataOutputter.writeInt(sArr.length);
 
@@ -38,9 +41,12 @@ public class InputAndOutputSeriesableArray {
     }
 
     private static void writeLenOfSerArrAsText(Seriesable[] sArr, Writer out) {
+        BufferedWriter buffer;
+        PrintWriter printer;
+
         try {
-            BufferedWriter buffer = new BufferedWriter(out);
-            PrintWriter printer = new PrintWriter(buffer);
+            buffer = new BufferedWriter(out);
+            printer = new PrintWriter(buffer);
 
             printer.println(sArr.length);
             printer.println();
@@ -53,11 +59,10 @@ public class InputAndOutputSeriesableArray {
     }
 
     public static void serializeSerArr(Seriesable[] sArr, OutputStream out) {
+        ObjectOutputStream serializer;
         try {
-            ObjectOutputStream serializer = new ObjectOutputStream(out);
-
+            serializer = new ObjectOutputStream(out);
             serializer.writeObject(sArr);
-
             serializer.flush();
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
@@ -80,11 +85,10 @@ public class InputAndOutputSeriesableArray {
     private static int getLenOfSerArrFromBytes(InputStream in) {
         int len = -1;
 
+        DataInputStream dataInputter;
         try {
-            DataInputStream dataInputter = new DataInputStream(in);
-
+            dataInputter = new DataInputStream(in);
             len = dataInputter.readInt();
-
             if (len == -1) {
                 throw new IOException("ошибка: не удалось считать длину массива из байтвого потока");
             }
@@ -109,8 +113,9 @@ public class InputAndOutputSeriesableArray {
     private static int getLenOfSerArrFromText(Reader in) {
         int len = -1;
 
+        BufferedReader reader;
         try {
-            BufferedReader reader = new BufferedReader(in);
+            reader = new BufferedReader(in);
 
             len = Integer.parseInt(reader.readLine());
             reader.readLine();
@@ -128,9 +133,9 @@ public class InputAndOutputSeriesableArray {
     public static Seriesable[] deserializeSerArr(InputStream in) throws NullSeriesableObjectException {
         Seriesable[] sArr;
 
+        ObjectInputStream deserializer;
         try {
-            ObjectInputStream deserializer = new ObjectInputStream(in);
-
+            deserializer = new ObjectInputStream(in);
             sArr = (Seriesable[]) deserializer.readObject();
         } catch (IOException | ClassNotFoundException exc) {
             System.out.println(exc.getMessage());

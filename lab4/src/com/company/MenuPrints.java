@@ -418,8 +418,9 @@ class MenuPrints {
         if (s == null) {
             printRedLn("операция невозможна: объект не задан");
         } else {
+            FileOutputStream fileOutputter;
             try {
-                FileOutputStream fileOutputter = new FileOutputStream(BYTES_FILE_WITH_SER);
+                fileOutputter = new FileOutputStream(BYTES_FILE_WITH_SER);
                 InputAndOutputSeriesable.outputSerAsBytes(s, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
@@ -435,8 +436,9 @@ class MenuPrints {
         if (s == null) {
             printRedLn("операция невозможна: объект не задан");
         } else {
+            FileWriter fileWriter;
             try {
-                FileWriter fileWriter = new FileWriter(TEXT_FILE_WITH_SER);
+                fileWriter = new FileWriter(TEXT_FILE_WITH_SER);
                 InputAndOutputSeriesable.writeSerAsText(s, fileWriter);
                 fileWriter.flush();
                 fileWriter.close();
@@ -452,8 +454,9 @@ class MenuPrints {
         if (s == null) {
             printRedLn("операция невозможна: объект не задан");
         } else {
+            FileOutputStream fileOutputter;
             try {
-                FileOutputStream fileOutputter = new FileOutputStream(SERIALIZED_FILE_WITH_SER);
+                fileOutputter = new FileOutputStream(SERIALIZED_FILE_WITH_SER);
                 InputAndOutputSeriesable.serializeSer(s, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
@@ -471,8 +474,9 @@ class MenuPrints {
         if (sArr == null) {
             printRedLn("операция невозможна: массив не задан");
         } else {
+            FileOutputStream fileOutputter;
             try {
-                FileOutputStream fileOutputter = new FileOutputStream(BYTES_FILE_WITH_SER_ARR);
+                fileOutputter = new FileOutputStream(BYTES_FILE_WITH_SER_ARR);
                 outputSerArrAsBytes(sArr, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
@@ -488,8 +492,9 @@ class MenuPrints {
         if (sArr == null) {
             printRedLn("операция невозможна: массив не задан");
         } else {
+            FileWriter fileWriter;
             try {
-                FileWriter fileWriter = new FileWriter(TEXT_FILE_WITH_SER_ARR);
+                fileWriter = new FileWriter(TEXT_FILE_WITH_SER_ARR);
                 writeSerArrAsText(sArr, fileWriter);
                 fileWriter.flush();
                 fileWriter.close();
@@ -505,8 +510,9 @@ class MenuPrints {
         if (sArr == null) {
             printRedLn("операция невозможна: массив не задан");
         } else {
+            FileOutputStream fileOutputter;
             try {
-                FileOutputStream fileOutputter = new FileOutputStream(SERIALIZED_FILE_WITH_SER_ARR);
+                fileOutputter = new FileOutputStream(SERIALIZED_FILE_WITH_SER_ARR);
                 serializeSerArr(sArr, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
@@ -523,8 +529,9 @@ class MenuPrints {
     static Seriesable printInputBytesAsSer() throws NullSeriesableObjectException {
         Seriesable s = null;
 
+        FileInputStream fileInputter;
         try {
-            FileInputStream fileInputter = new FileInputStream(BYTES_FILE_WITH_SER);
+            fileInputter = new FileInputStream(BYTES_FILE_WITH_SER);
             s = inputBytesAsSer(fileInputter);
             fileInputter.close();
 
@@ -543,8 +550,9 @@ class MenuPrints {
     static Seriesable printReadTextAsSer() throws NullSeriesableObjectException {
         Seriesable s = null;
 
+        FileReader fileReader;
         try {
-            FileReader fileReader = new FileReader(TEXT_FILE_WITH_SER);
+            fileReader = new FileReader(TEXT_FILE_WITH_SER);
             s = readTextAsSer(fileReader);
             fileReader.close();
 
@@ -563,8 +571,9 @@ class MenuPrints {
     static Seriesable printDeserializeSer() throws NullSeriesableObjectException {
         Seriesable s = null;
 
+        FileInputStream fileInputter;
         try {
-            FileInputStream fileInputter = new FileInputStream(SERIALIZED_FILE_WITH_SER);
+            fileInputter = new FileInputStream(SERIALIZED_FILE_WITH_SER);
             s = deserializeSer(fileInputter);
             fileInputter.close();
 
@@ -585,8 +594,9 @@ class MenuPrints {
     static Seriesable[] printInputBytesAsSerArr() throws NullSeriesableObjectException {
         Seriesable[] sArr = null;
 
+        FileInputStream fileInputter;
         try {
-            FileInputStream fileInputter = new FileInputStream(BYTES_FILE_WITH_SER_ARR);
+            fileInputter = new FileInputStream(BYTES_FILE_WITH_SER_ARR);
             sArr = inputBytesAsSerArr(fileInputter);
             fileInputter.close();
 
@@ -605,8 +615,9 @@ class MenuPrints {
     static Seriesable[] printReadTextAsSerArr() throws NullSeriesableObjectException {
         Seriesable[] sArr = null;
 
+        FileReader fileReader;
         try {
-            FileReader fileReader = new FileReader(TEXT_FILE_WITH_SER_ARR);
+            fileReader = new FileReader(TEXT_FILE_WITH_SER_ARR);
             sArr = readTextAsSerArr(fileReader);
             fileReader.close();
 
@@ -625,8 +636,9 @@ class MenuPrints {
     static Seriesable[] printDeserializeSerArr() throws NullSeriesableObjectException {
         Seriesable[] sArr = null;
 
+        FileInputStream fileInputter;
         try {
-            FileInputStream fileInputter = new FileInputStream(SERIALIZED_FILE_WITH_SER_ARR);
+            fileInputter = new FileInputStream(SERIALIZED_FILE_WITH_SER_ARR);
             sArr = deserializeSerArr(fileInputter);
             fileInputter.close();
 

@@ -15,9 +15,9 @@ public class InputAndOutputSeriesable {
     }
 
     public static void serializeSer(Seriesable s, OutputStream out) {
+        ObjectOutputStream serializer;
         try {
-            ObjectOutputStream serializer = new ObjectOutputStream(out);
-
+            serializer = new ObjectOutputStream(out);
             serializer.writeObject(s);
             serializer.flush();
         } catch (IOException exc) {
@@ -30,8 +30,9 @@ public class InputAndOutputSeriesable {
     public static Seriesable inputBytesAsSer(InputStream in) throws NullSeriesableObjectException, ClassNotFoundException {
         Seriesable s;
 
+        DataInputStream dataInputter;
         try {
-            DataInputStream dataInputter = new DataInputStream(in);
+            dataInputter = new DataInputStream(in);
 
             String className = dataInputter.readUTF();
             String title = dataInputter.readUTF();
@@ -77,8 +78,9 @@ public class InputAndOutputSeriesable {
     public static Seriesable readTextAsSer(Reader in) throws NullSeriesableObjectException, ClassNotFoundException {
         Seriesable s;
 
+        BufferedReader reader;
         try {
-            BufferedReader reader = new BufferedReader(in);
+            reader = new BufferedReader(in);
 
             String className = reader.readLine();
             reader.readLine();
@@ -122,8 +124,9 @@ public class InputAndOutputSeriesable {
     public static Seriesable deserializeSer(InputStream in) throws NullSeriesableObjectException {
         Seriesable s;
 
+        ObjectInputStream deserializer;
         try {
-            ObjectInputStream deserializer = new ObjectInputStream(in);
+            deserializer = new ObjectInputStream(in);
             s = (Seriesable) deserializer.readObject();
         } catch (IOException | ClassNotFoundException exc) {
             System.out.println(exc.getMessage());
