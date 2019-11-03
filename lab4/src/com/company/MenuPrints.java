@@ -4,12 +4,13 @@ import com.company.Exceptions.IllegalIndexException;
 import com.company.Exceptions.NullSeriesableObjectException;
 import com.company.Series.ArticlesSeries;
 import com.company.Series.BooksSeries;
+import com.company.Series.InputAndOutputSeriesable;
 import com.company.Series.Seriesable;
 
 import java.io.*;
 import java.util.Scanner;
 
-import static com.company.InputAndOutput.*;
+import static com.company.Series.InputAndOutputSeriesable.*;
 import static com.company.Series.Series.*;
 
 class MenuPrints {
@@ -418,7 +419,7 @@ class MenuPrints {
         } else {
             try {
                 FileOutputStream fileOutputter = new FileOutputStream(BYTES_FILE_WITH_SER);
-                InputAndOutput.outputSerAsBytes(s, fileOutputter);
+                InputAndOutputSeriesable.outputSerAsBytes(s, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
@@ -435,7 +436,7 @@ class MenuPrints {
         } else {
             try {
                 FileWriter fileWriter = new FileWriter(TEXT_FILE_WITH_SER);
-                InputAndOutput.writeSerAsText(s, fileWriter);
+                InputAndOutputSeriesable.writeSerAsText(s, fileWriter);
                 fileWriter.flush();
                 fileWriter.close();
 
@@ -452,7 +453,7 @@ class MenuPrints {
         } else {
             try {
                 FileOutputStream fileOutputter = new FileOutputStream(SERIALIZED_FILE_WITH_SER);
-                InputAndOutput.serializeSer(s, fileOutputter);
+                InputAndOutputSeriesable.serializeSer(s, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
@@ -471,7 +472,7 @@ class MenuPrints {
         } else {
             try {
                 FileOutputStream fileOutputter = new FileOutputStream(BYTES_FILE_WITH_SER_ARR);
-                InputAndOutput.outputSerArrAsBytes(sArr, fileOutputter);
+                InputAndOutputSeriesable.outputSerArrAsBytes(sArr, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
@@ -488,7 +489,7 @@ class MenuPrints {
         } else {
             try {
                 FileWriter fileWriter = new FileWriter(TEXT_FILE_WITH_SER_ARR);
-                InputAndOutput.writeSerArrAsText(sArr, fileWriter);
+                InputAndOutputSeriesable.writeSerArrAsText(sArr, fileWriter);
                 fileWriter.flush();
                 fileWriter.close();
 
@@ -505,7 +506,7 @@ class MenuPrints {
         } else {
             try {
                 FileOutputStream fileOutputter = new FileOutputStream(SERIALIZED_FILE_WITH_SER_ARR);
-                InputAndOutput.serializeSerArr(sArr, fileOutputter);
+                InputAndOutputSeriesable.serializeSerArr(sArr, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
@@ -518,7 +519,7 @@ class MenuPrints {
     // endregion
 
     // region считывание объекта
-    static Seriesable printInputBytesAsSerAndGet() throws NullSeriesableObjectException {
+    static Seriesable printInputBytesAsSer() throws NullSeriesableObjectException {
         Seriesable s = null;
 
         try {
@@ -538,7 +539,7 @@ class MenuPrints {
         return s;
     }
 
-    static Seriesable printReadTextAsSerAndGet() throws NullSeriesableObjectException {
+    static Seriesable printReadTextAsSer() throws NullSeriesableObjectException {
         Seriesable s = null;
 
         try {
@@ -558,7 +559,7 @@ class MenuPrints {
         return s;
     }
 
-    static Seriesable printDeserializeSerAndGet() throws NullSeriesableObjectException {
+    static Seriesable printDeserializeSer() throws NullSeriesableObjectException {
         Seriesable s = null;
 
         try {
@@ -580,7 +581,7 @@ class MenuPrints {
     // endregion
 
     // region считывание массива
-    static Seriesable[] printInputBytesAsSerArrAndGet() throws NullSeriesableObjectException {
+    static Seriesable[] printInputBytesAsSerArr() throws NullSeriesableObjectException {
         Seriesable[] sArr = null;
 
         try {
@@ -600,7 +601,7 @@ class MenuPrints {
         return sArr;
     }
 
-    static Seriesable[] printReadTextAsSerArrAndGet() throws NullSeriesableObjectException {
+    static Seriesable[] printReadTextAsSerArr() throws NullSeriesableObjectException {
         Seriesable[] sArr = null;
 
         try {
@@ -620,7 +621,7 @@ class MenuPrints {
         return sArr;
     }
 
-    static Seriesable[] printDeserializeSerArrAndGet() throws NullSeriesableObjectException {
+    static Seriesable[] printDeserializeSerArr() throws NullSeriesableObjectException {
         Seriesable[] sArr = null;
 
         try {

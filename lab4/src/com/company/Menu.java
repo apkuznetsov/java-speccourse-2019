@@ -103,7 +103,7 @@ class Menu {
                 case "6":
                     printTask(" 6 -- считать базу из байтового потока");
                     try {
-                        sArr = printInputBytesAsSerArrAndGet();
+                        sArr = printInputBytesAsSerArr();
                     } catch (NullSeriesableObjectException exc) {
                         printRedLn(exc.getMessage());
                     }
@@ -112,7 +112,7 @@ class Menu {
                 case "7":
                     printTask(" 7 -- считать базу из текстового потока");
                     try {
-                        sArr = printReadTextAsSerArrAndGet();
+                        sArr = printReadTextAsSerArr();
                     } catch (NullSeriesableObjectException exc) {
                         printRedLn(exc.getMessage());
                     }
@@ -121,7 +121,7 @@ class Menu {
                 case "8":
                     printTask(" 8 -- десериализовать базу");
                     try {
-                        sArr = printDeserializeSerArrAndGet();
+                        sArr = printDeserializeSerArr();
                     } catch (NullSeriesableObjectException exc) {
                         printRedLn(exc.getMessage());
                     }
@@ -157,7 +157,7 @@ class Menu {
                 case "14":
                     printTask("14 -- считать из байтового потока");
                     try {
-                        s = printInputBytesAsSerAndGet();
+                        s = printInputBytesAsSer();
                     } catch (NullSeriesableObjectException exc) {
                         printRedLn(exc.getMessage());
                     }
@@ -166,7 +166,7 @@ class Menu {
                 case "15":
                     printTask("15 -- считать из текстового потока");
                     try {
-                        s = printReadTextAsSerAndGet();
+                        s = printReadTextAsSer();
                     } catch (NullSeriesableObjectException exc) {
                         printRedLn(exc.getMessage());
                     }
@@ -175,7 +175,7 @@ class Menu {
                 case "16":
                     printTask("16 -- десериализовать объект");
                     try {
-                        s = printDeserializeSerAndGet();
+                        s = printDeserializeSer();
                     } catch (NullSeriesableObjectException exc) {
                         printRedLn(exc.getMessage());
                     }
