@@ -18,13 +18,11 @@ public class InputAndOutputSeriesableArray {
 
     private static void outputLenOfSerArrAsBytes(Seriesable[] sArr, OutputStream out) {
         try {
-            BufferedOutputStream buffer = new BufferedOutputStream(out);
-            DataOutputStream dataOutputter = new DataOutputStream(buffer);
+            DataOutputStream dataOutputter = new DataOutputStream(out);
 
             dataOutputter.writeInt(sArr.length);
 
             dataOutputter.flush();
-            buffer.flush();
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
         }
@@ -38,18 +36,12 @@ public class InputAndOutputSeriesableArray {
     }
 
     private static void writeLenOfSerArrAsText(Seriesable[] sArr, Writer out) {
-        try {
-            BufferedWriter buffer = new BufferedWriter(out);
-            PrintWriter printer = new PrintWriter(buffer);
+        PrintWriter printer = new PrintWriter(out);
 
-            printer.println(sArr.length);
-            printer.println();
+        printer.println(sArr.length);
+        printer.println();
 
-            printer.flush();
-            buffer.flush();
-        } catch (IOException exc) {
-            System.out.println(exc.getMessage());
-        }
+        printer.flush();
     }
 
     public static void serializeSerArr(Seriesable[] sArr, OutputStream out) {
