@@ -11,6 +11,7 @@ import java.io.*;
 import java.util.Scanner;
 
 import static com.company.Series.InputAndOutputSeriesable.*;
+import static com.company.Series.InputAndOutputSeriesableArray.*;
 import static com.company.Series.Series.*;
 
 class MenuPrints {
@@ -472,7 +473,7 @@ class MenuPrints {
         } else {
             try {
                 FileOutputStream fileOutputter = new FileOutputStream(BYTES_FILE_WITH_SER_ARR);
-                InputAndOutputSeriesable.outputSerArrAsBytes(sArr, fileOutputter);
+                outputSerArrAsBytes(sArr, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
@@ -489,7 +490,7 @@ class MenuPrints {
         } else {
             try {
                 FileWriter fileWriter = new FileWriter(TEXT_FILE_WITH_SER_ARR);
-                InputAndOutputSeriesable.writeSerArrAsText(sArr, fileWriter);
+                writeSerArrAsText(sArr, fileWriter);
                 fileWriter.flush();
                 fileWriter.close();
 
@@ -506,7 +507,7 @@ class MenuPrints {
         } else {
             try {
                 FileOutputStream fileOutputter = new FileOutputStream(SERIALIZED_FILE_WITH_SER_ARR);
-                InputAndOutputSeriesable.serializeSerArr(sArr, fileOutputter);
+                serializeSerArr(sArr, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
