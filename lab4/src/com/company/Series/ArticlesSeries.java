@@ -168,8 +168,7 @@ public class ArticlesSeries implements Seriesable, Serializable {
     // endregion
 
     public void outputAsBytes(OutputStream out) {
-        BufferedOutputStream buffer = new BufferedOutputStream(out);
-        DataOutputStream dataOutputter = new DataOutputStream(buffer);
+        DataOutputStream dataOutputter = new DataOutputStream(out);
 
         try {
             dataOutputter.writeUTF(getClass().getName());
@@ -183,39 +182,32 @@ public class ArticlesSeries implements Seriesable, Serializable {
             }
 
             dataOutputter.flush();
-            buffer.flush();
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
         }
     }
 
     public void writeAsText(Writer out) {
-        BufferedWriter buffer = new BufferedWriter(out);
-        PrintWriter printer = new PrintWriter(buffer);
+        PrintWriter printer = new PrintWriter(out);
 
-        try {
-            printer.println(getClass().getName());
+        printer.println(getClass().getName());
+        printer.println();
+
+        printer.println(title);
+        printer.println();
+
+        printer.println(numOfAbstractPages);
+        printer.println();
+
+        printer.println(articles.length);
+        printer.println();
+
+        for (int index = 0; index < articles.length; index++) {
+            printer.println(articles[index]);
+            printer.println(numsOfPages[index]);
             printer.println();
-
-            printer.println(title);
-            printer.println();
-
-            printer.println(numOfAbstractPages);
-            printer.println();
-
-            printer.println(articles.length);
-            printer.println();
-
-            for (int index = 0; index < articles.length; index++) {
-                printer.println(articles[index]);
-                printer.println(numsOfPages[index]);
-                printer.println();
-            }
-
-            printer.flush();
-            buffer.flush();
-        } catch (IOException exc) {
-            System.out.println(exc.getMessage());
         }
+
+        printer.flush();
     }
 }
