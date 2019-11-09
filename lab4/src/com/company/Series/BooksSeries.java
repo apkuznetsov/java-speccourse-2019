@@ -192,21 +192,13 @@ public class BooksSeries implements Seriesable, Serializable {
         PrintWriter printer = new PrintWriter(out);
 
         printer.println(getClass().getName());
-        printer.println();
-
         printer.println(title);
-        printer.println();
-
         printer.println(numOfPrefacePages);
-        printer.println();
-
         printer.println(books.length);
-        printer.println();
 
         for (int index = 0; index < books.length; index++) {
             printer.println(books[index]);
             printer.println(numsOfPages[index]);
-            printer.println();
         }
 
         printer.flush();

@@ -191,21 +191,13 @@ public class ArticlesSeries implements Seriesable, Serializable {
         PrintWriter printer = new PrintWriter(out);
 
         printer.println(getClass().getName());
-        printer.println();
-
         printer.println(title);
-        printer.println();
-
         printer.println(numOfAbstractPages);
-        printer.println();
-
         printer.println(articles.length);
-        printer.println();
 
         for (int index = 0; index < articles.length; index++) {
             printer.println(articles[index]);
             printer.println(numsOfPages[index]);
-            printer.println();
         }
 
         printer.flush();

@@ -19,7 +19,6 @@ public class InputAndOutputSeriesableArray {
     private static void outputLenOfSerArrAsBytes(Seriesable[] sArr, OutputStream out) {
         BufferedOutputStream buffer;
         DataOutputStream dataOutputter;
-
         try {
             buffer = new BufferedOutputStream(out);
             dataOutputter = new DataOutputStream(buffer);
@@ -47,11 +46,10 @@ public class InputAndOutputSeriesableArray {
             buffer = new BufferedWriter(out);
             printer = new PrintWriter(buffer);
 
-        printer.println(sArr.length);
-        printer.println();
+            printer.println(sArr.length);
 
-        printer.flush();
-        buffer.flush();
+            printer.flush();
+            buffer.flush();
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
         }
