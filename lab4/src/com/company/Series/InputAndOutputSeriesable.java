@@ -75,24 +75,14 @@ public class InputAndOutputSeriesable {
         }
     }
 
-    public static Seriesable readTextAsSer(Reader in) throws NullSeriesableObjectException, ClassNotFoundException {
+    public static Seriesable readTextAsSer(BufferedReader bf) throws NullSeriesableObjectException, ClassNotFoundException {
         Seriesable s;
 
-        BufferedReader reader;
         try {
-            reader = new BufferedReader(in);
-
-            String className = reader.readLine();
-            reader.readLine();
-
-            String title = reader.readLine();
-            reader.readLine();
-
-            int numOfStartPages = Integer.parseInt(reader.readLine());
-            reader.readLine();
-
-            int numOfEls = Integer.parseInt(reader.readLine());
-            reader.readLine();
+            String className = bf.readLine();
+            String title = bf.readLine();
+            int numOfStartPages = Integer.parseInt(bf.readLine());
+            int numOfEls = Integer.parseInt(bf.readLine());
 
             s = getNewSerByClassName(className, title, numOfStartPages, numOfEls);
 
@@ -100,9 +90,8 @@ public class InputAndOutputSeriesable {
             String el;
             int numOfPages;
             for (int index = 0; index < len; index++) {
-                el = reader.readLine();
-                numOfPages = Integer.parseInt(reader.readLine());
-                reader.readLine();
+                el = bf.readLine();
+                numOfPages = Integer.parseInt(bf.readLine());
 
                 s.setEl(index, el);
                 s.setNumOfPagesOfEl(index, numOfPages);

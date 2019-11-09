@@ -168,9 +168,10 @@ public class BooksSeries implements Seriesable, Serializable {
     // endregion
 
     public void outputAsBytes(OutputStream out) {
-        DataOutputStream dataOutputter = new DataOutputStream(out);
-
+        DataOutputStream dataOutputter;
         try {
+            dataOutputter = new DataOutputStream(out);
+
             dataOutputter.writeUTF(getClass().getName());
             dataOutputter.writeUTF(title);
             dataOutputter.writeInt(numOfPrefacePages);
@@ -182,7 +183,6 @@ public class BooksSeries implements Seriesable, Serializable {
             }
 
             dataOutputter.flush();
-            ;
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
         }

@@ -10,21 +10,18 @@ import static com.company.Series.InputAndOutputSeriesable.readTextAsSer;
 public class InputAndOutputSeriesableArray {
     // region запись массива
     public static void outputSerArrAsBytes(Seriesable[] sArr, OutputStream out) {
-        outputLenOfSerArrAsBytes(sArr, out);
+        BufferedOutputStream bos = new BufferedOutputStream(out);
+        outputLenOfSerArrAsBytes(sArr, bos);
         for (Seriesable s : sArr) {
             s.outputAsBytes(out);
         }
     }
 
-    private static void outputLenOfSerArrAsBytes(Seriesable[] sArr, OutputStream out) {
-        BufferedOutputStream buffer;
+    private static void outputLenOfSerArrAsBytes(Seriesable[] sArr, BufferedOutputStream bos) {
         DataOutputStream dataOutputter;
         try {
-            buffer = new BufferedOutputStream(out);
-            dataOutputter = new DataOutputStream(buffer);
-
+            dataOutputter = new DataOutputStream(bos);
             dataOutputter.writeInt(sArr.length);
-
             dataOutputter.flush();
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
@@ -32,27 +29,17 @@ public class InputAndOutputSeriesableArray {
     }
 
     public static void writeSerArrAsText(Seriesable[] sArr, Writer out) {
-        writeLenOfSerArrAsText(sArr, out);
+        BufferedWriter bw = new BufferedWriter(out);
+        writeLenOfSerArrAsText(sArr, bw);
         for (Seriesable s : sArr) {
             s.writeAsText(out);
         }
     }
 
-    private static void writeLenOfSerArrAsText(Seriesable[] sArr, Writer out) {
-        BufferedWriter buffer;
-        PrintWriter printer;
-        try {
-
-            buffer = new BufferedWriter(out);
-            printer = new PrintWriter(buffer);
-
-            printer.println(sArr.length);
-
-            printer.flush();
-            buffer.flush();
-        } catch (IOException exc) {
-            System.out.println(exc.getMessage());
-        }
+    private static void writeLenOfSerArrAsText(Seriesable[] sArr, BufferedWriter bw) {
+        PrintWriter printer = new PrintWriter(bw);
+        printer.println(sArr.length);
+        printer.flush();
     }
 
     public static void serializeSerArr(Seriesable[] sArr, OutputStream out) {
@@ -97,26 +84,22 @@ public class InputAndOutputSeriesableArray {
     }
 
     public static Seriesable[] readTextAsSerArr(Reader in) throws NullSeriesableObjectException, ClassNotFoundException {
-        final int len = getLenOfSerArrFromText(in);
+        BufferedReader bf = new BufferedReader(in);
+        final int len = getLenOfSerArrFromText(bf);
         Seriesable[] sArr = new Seriesable[len];
 
         for (int index = 0; index < len; ++index) {
-            sArr[index] = readTextAsSer(in);
+            sArr[index] = readTextAsSer(bf);
         }
 
         return sArr;
     }
 
-    private static int getLenOfSerArrFromText(Reader in) {
+    private static int getLenOfSerArrFromText(BufferedReader bf) {
         int len = -1;
 
-        BufferedReader reader;
         try {
-            reader = new BufferedReader(in);
-
-            len = Integer.parseInt(reader.readLine());
-            reader.readLine();
-
+            len = Integer.parseInt(bf.readLine());
             if (len == -1) {
                 throw new IOException("ошибка: не удалось считать длину массива из байтвого потока");
             }

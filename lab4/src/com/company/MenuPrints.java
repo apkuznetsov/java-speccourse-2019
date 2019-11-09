@@ -551,9 +551,14 @@ class MenuPrints {
         Seriesable s = null;
 
         FileReader fileReader;
+        BufferedReader bufferedReader;
         try {
             fileReader = new FileReader(TEXT_FILE_WITH_SER);
-            s = readTextAsSer(fileReader);
+            bufferedReader = new BufferedReader(fileReader);
+
+            s = readTextAsSer(bufferedReader);
+
+            bufferedReader.close();
             fileReader.close();
 
             printGreenLn("объект успешно считан из тектового потока (файла)");
