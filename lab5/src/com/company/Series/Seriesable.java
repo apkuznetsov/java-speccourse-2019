@@ -26,15 +26,11 @@ public interface Seriesable {
 
     int getNumOfEls();
 
-    String getEl(int index);
-
     int getNumOfPagesOfEl(int index);
 
-    void setEl(int index, String el);
+    int getSumOfPagesWithoutStart();
 
     void setNumOfPagesOfEl(int index, int num);
-
-    int getSumOfPagesWithoutStart();
 
     void outputAsBytes(OutputStream out); // запись в байтовый поток
 

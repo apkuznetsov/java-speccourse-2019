@@ -16,7 +16,7 @@ public class ReadingThread extends Thread {
             return;
         }
 
-        for (int index = 0, numOfPages = 0; index < s.getNumOfEls(); index++) {
+        for (int index = 0; index < s.getNumOfEls(); index++) {
             System.out.println("READ  " + s.getNumOfPagesOfEl(index) + " from position " + index);
         }
     }

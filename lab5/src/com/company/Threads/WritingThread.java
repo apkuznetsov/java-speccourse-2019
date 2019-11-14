@@ -17,8 +17,8 @@ public class WritingThread extends Thread {
             return;
         }
 
-        for (int index = 0, numOfPages = 0; index < s.getNumOfEls(); index++) {
-            s.setEl(index, "Мой текст 1" + index);
+        int numOfPages;
+        for (int index = 0; index < s.getNumOfEls(); index++) {
             numOfPages = Testing.getRandNumOfPages();
             s.setNumOfPagesOfEl(index, numOfPages);
             System.out.println("WRITE " + numOfPages + " to   position " + index);

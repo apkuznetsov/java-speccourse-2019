@@ -4,7 +4,7 @@ import com.company.Exceptions.NullSeriesableException;
 
 import java.io.*;
 
-public class InputAndOutputSeriesable {
+public class InputAndOutput {
     // region запись объекта
     public static void outputSerAsBytes(Seriesable s, OutputStream out) {
         s.outputAsBytes(out);
@@ -43,13 +43,9 @@ public class InputAndOutputSeriesable {
             s = getNewSerByClassName(className, title, numOfStartPages, numOfEls);
 
             final int len = s.getNumOfEls();
-            String el;
             int numOfPages;
             for (int index = 0; index < len; index++) {
-                el = dataInputter.readUTF();
                 numOfPages = dataInputter.readInt();
-
-                s.setEl(index, el);
                 s.setNumOfPagesOfEl(index, numOfPages);
             }
         } catch (IOException exc) {
@@ -89,13 +85,9 @@ public class InputAndOutputSeriesable {
             s = getNewSerByClassName(className, title, numOfStartPages, numOfEls);
 
             final int len = s.getNumOfEls();
-            String el;
             int numOfPages;
             for (int index = 0; index < len; index++) {
-                el = bf.readLine();
                 numOfPages = Integer.parseInt(bf.readLine());
-
-                s.setEl(index, el);
                 s.setNumOfPagesOfEl(index, numOfPages);
             }
         } catch (IOException | NumberFormatException exc) {

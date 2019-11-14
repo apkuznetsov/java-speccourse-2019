@@ -7,14 +7,12 @@ import java.io.*;
 public class BooksSeries implements Seriesable, Serializable {
     private String title;
     private int numOfPrefacePages;
-    private String[] books;
     private int[] numsOfPages;
 
     public BooksSeries(String title, int numOfPrefacePages, int numOfBooks) {
         this.title = title;
         this.numOfPrefacePages = numOfPrefacePages;
-        books = new String[numOfBooks];
-        numsOfPages = new int[books.length];
+        numsOfPages = new int[numOfBooks];
     }
 
     // region get
@@ -43,17 +41,9 @@ public class BooksSeries implements Seriesable, Serializable {
     }
 
     public int getNumOfEls() {
-        return books.length;
+        return numsOfPages.length;
     }
     // endregion
-
-    public String getEl(int index) {
-        if (index < 0 || index >= books.length) {
-            throw new IllegalIndexException("неверный индекс");
-        }
-
-        return books[index];
-    }
 
     public int getNumOfPagesOfEl(int index) {
         if (index < 0 || index >= numsOfPages.length) {
@@ -63,16 +53,8 @@ public class BooksSeries implements Seriesable, Serializable {
         return numsOfPages[index];
     }
 
-    public void setEl(int index, String el) {
-        if (index < 0 || index >= books.length) {
-            throw new IllegalIndexException("неверный индекс");
-        }
-
-        books[index] = el;
-    }
-
     public void setNumOfPagesOfEl(int index, int num) {
-        if (index < 0 || index >= books.length) {
+        if (index < 0 || index >= numsOfPages.length) {
             throw new IllegalIndexException("неверный индекс");
         }
         if (num < Seriesable.MIN_NUM_OF_PAGES_OF_EL) {
@@ -104,7 +86,7 @@ public class BooksSeries implements Seriesable, Serializable {
         sb.append("название сборника книг............................. ").append(title).append('\n');
         sb.append("кол-во страниц в предисловии ...................... ").append(numOfPrefacePages).append('\n');
         sb.append("общей кол-во страниц в сборнике без предисловий ... ").append(getSumOfPagesWithoutStart()).append('\n');
-        sb.append("кол-во элементов .................................. ").append(books.length).append('\n');
+        sb.append("кол-во элементов .................................. ").append(numsOfPages.length).append('\n');
         sb.append("тип объекта........................................ ").append(getClass().getName()).append('\n');
         sb.append("---------------------------------------------------\n");
 
@@ -114,14 +96,12 @@ public class BooksSeries implements Seriesable, Serializable {
     }
 
     private void appendBooksInfo(StringBuilder sb) {
-        int lastIndex = books.length - 1;
+        int lastIndex = numsOfPages.length - 1;
         for (int i = 0; i < lastIndex; i++) {
             sb.append(i).append(") ").
-                    append(books[i]).
                     append(" (кол-во стр. -- ").append(numsOfPages[i]).append(")").append("\n");
         }
         sb.append(lastIndex).append(") ").
-                append(books[lastIndex]).
                 append(" (кол-во стр. -- ").append(numsOfPages[lastIndex]).append(")");
     }
 
@@ -133,33 +113,15 @@ public class BooksSeries implements Seriesable, Serializable {
             Seriesable anotherSer = (Seriesable) obj;
 
             if (this.title.equals(anotherSer.getTitle()))
-                return areElsEqual(anotherSer);
+                return areNumsOfPagesEqual(anotherSer);
         }
 
         return false;
     }
 
-    private boolean areElsEqual(Seriesable anotherSer) {
-        if (!areNumOfStartPagesAndElsEqual(anotherSer)) {
-            return false;
-        }
-
-        for (int i = 0; i < books.length; i++) {
-            if (!isElEqual(i, anotherSer))
-                return false;
-        }
-
-        return true;
-    }
-
-    private boolean areNumOfStartPagesAndElsEqual(Seriesable anotherSer) {
+    private boolean areNumsOfPagesEqual(Seriesable anotherSer) {
         return this.getNumOfStartPages() == anotherSer.getNumOfStartPages() &&
-                this.books.length == anotherSer.getNumOfEls();
-    }
-
-    private boolean isElEqual(int index, Seriesable anotherSer) {
-        return books[index].equals(anotherSer.getEl(index)) &&
-                numsOfPages[index] == anotherSer.getNumOfPagesOfEl(index);
+                this.numsOfPages.length == anotherSer.getNumOfEls();
     }
 
     @Override
@@ -176,11 +138,10 @@ public class BooksSeries implements Seriesable, Serializable {
             dataOutputter.writeUTF(getClass().getName());
             dataOutputter.writeUTF(title);
             dataOutputter.writeInt(numOfPrefacePages);
-            dataOutputter.writeInt(books.length);
+            dataOutputter.writeInt(numsOfPages.length);
 
-            for (int index = 0; index < books.length; index++) {
-                dataOutputter.writeUTF(books[index]);
-                dataOutputter.writeInt(numsOfPages[index]);
+            for (int numsOfPage : numsOfPages) {
+                dataOutputter.writeInt(numsOfPage);
             }
 
             dataOutputter.flush();
@@ -196,11 +157,10 @@ public class BooksSeries implements Seriesable, Serializable {
         printer.println(getClass().getName());
         printer.println(title);
         printer.println(numOfPrefacePages);
-        printer.println(books.length);
+        printer.println(numsOfPages.length);
 
-        for (int index = 0; index < books.length; index++) {
-            printer.println(books[index]);
-            printer.println(numsOfPages[index]);
+        for (int numsOfPage : numsOfPages) {
+            printer.println(numsOfPage);
         }
 
         printer.flush();

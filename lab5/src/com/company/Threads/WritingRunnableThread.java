@@ -17,8 +17,9 @@ public class WritingRunnableThread implements Runnable {
                 val = Testing.getRandNumOfPages();
                 ssyncher.write(val);
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException exc) {
+            System.out.println(exc.getMessage());
+            exc.printStackTrace();
         }
     }
 }

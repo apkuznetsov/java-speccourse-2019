@@ -36,14 +36,6 @@ class Program {
                     " 5 -- разбить базу на два массива,\n" +
                     "      в которых будут храниться однотипные элементы\n" +
                     LINE +
-                    " 6 -- считать базу из байтового потока\n" +
-                    " 7 -- считать базу из текстового потока\n" +
-                    " 8 -- десериализовать базу\n" +
-                    LINE +
-                    " 9 -- записать базу в байтовый поток\n" +
-                    "10 -- записать базу в символьный поток\n" +
-                    "11 -- сериализовать базу\n" +
-                    LINE +
                     LINE +
                     "РАБОТА С ОБЪЕКТОМ:\n" +
                     LINE +
@@ -111,51 +103,6 @@ class Program {
                     printTask(" 5 -- разбить базу на два массива,\n" +
                             "      в которых будут храниться однотипные элементы");
                     printSplitSarrIntoTwoArticlesAndBooksArrs(sarr);
-                    break;
-
-                case "6":
-                    printTask(" 6 -- считать базу из байтового потока");
-                    try {
-                        sarr = printInputBytesAsSarr();
-                    } catch (NullSeriesableException exc) {
-                        printRedLn(exc.getMessage());
-                        exc.printStackTrace();
-                    }
-                    break;
-
-                case "7":
-                    printTask(" 7 -- считать базу из текстового потока");
-                    try {
-                        sarr = printReadTextAsSarr();
-                    } catch (NullSeriesableException exc) {
-                        printRedLn(exc.getMessage());
-                        exc.printStackTrace();
-                    }
-                    break;
-
-                case "8":
-                    printTask(" 8 -- десериализовать базу");
-                    try {
-                        sarr = printDeserializeSarr();
-                    } catch (NullSeriesableException exc) {
-                        printRedLn(exc.getMessage());
-                        exc.printStackTrace();
-                    }
-                    break;
-
-                case "9":
-                    printTask(" 9 -- записать базу в байтовый поток");
-                    printOutputSarrAsBytes(sarr);
-                    break;
-
-                case "10":
-                    printTask("10 -- записать базу в символьный поток");
-                    printWriteSarrAsText(sarr);
-                    break;
-
-                case "11":
-                    printTask("11 -- сериализовать базу");
-                    printSerializeSarr(sarr);
                     break;
                 // endregion
 

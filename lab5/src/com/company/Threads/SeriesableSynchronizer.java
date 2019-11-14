@@ -11,7 +11,7 @@ public class SeriesableSynchronizer {
         this.s = i;
     }
 
-    public void write(int val) throws InterruptedException {
+    void write(int val) throws InterruptedException {
         synchronized (s) {
             if (!canWrite()) {
                 throw new InterruptedException();
@@ -32,7 +32,7 @@ public class SeriesableSynchronizer {
         return (!isElSet && currIndex < s.getNumOfEls() || (isElSet && currIndex < s.getNumOfEls() - 1));
     }
 
-    public void read() throws InterruptedException {
+    void read() throws InterruptedException {
         int val;
         synchronized (s) {
             if (!canRead()) {
@@ -55,7 +55,7 @@ public class SeriesableSynchronizer {
         return currIndex < s.getNumOfEls();
     }
 
-    public int getSerNumOfEls() {
+    int getSerNumOfEls() {
         return s.getNumOfEls();
     }
 }

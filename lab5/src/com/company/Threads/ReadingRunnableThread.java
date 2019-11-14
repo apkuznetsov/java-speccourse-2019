@@ -13,8 +13,9 @@ public class ReadingRunnableThread implements Runnable {
             for (int index = 0; index < ssyncher.getSerNumOfEls(); index++) {
                 ssyncher.read();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException exc) {
+            System.out.println(exc.getMessage());
+            exc.printStackTrace();
         }
     }
 }

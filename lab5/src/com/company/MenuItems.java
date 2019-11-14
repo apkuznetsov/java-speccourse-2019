@@ -4,28 +4,21 @@ import com.company.Exceptions.IllegalIndexException;
 import com.company.Exceptions.NullSeriesableException;
 import com.company.Series.ArticlesSeries;
 import com.company.Series.BooksSeries;
-import com.company.Series.InputAndOutputSeriesable;
+import com.company.Series.InputAndOutput;
 import com.company.Series.Seriesable;
 
 import java.io.*;
 import java.util.Scanner;
 
-import static com.company.Series.InputAndOutputSeriesable.*;
-import static com.company.Series.InputAndOutputSeriesableArray.*;
+import static com.company.Series.InputAndOutput.*;
 import static com.company.Series.Series.*;
 
 class MenuItems {
-    // region константы
     static final String LINE = "-------------------------------------------------------------------------------\n";
 
     private static final String BYTES_FILE_WITH_SER = "serAsBytes.bin";
     private static final String TEXT_FILE_WITH_SER = "serAsText.txt";
     private static final String SERIALIZED_FILE_WITH_SER = "serSerialized.bin";
-
-    private static final String BYTES_FILE_WITH_SARR = "sarrAsBytes.bin";
-    private static final String TEXT_FILE_WITH_SARR = "sarrAsText.txt";
-    private static final String SERIALIZED_FILE_WITH_SARR = "sarrSerialized.bin";
-    // endregion
 
     // region принты
     static void printRed(String str) {
@@ -46,13 +39,6 @@ class MenuItems {
 
     static void printTask(String task) {
         System.out.print('\n' + task + '\n' + LINE);
-    }
-
-    static void printExit() {
-        System.out.print('\n' + "нажмите Enter, чтобы выйти в меню ... ");
-        Scanner scan = new Scanner(System.in);
-        scan.nextLine();
-        System.out.println();
     }
     // endregion
 
@@ -97,23 +83,6 @@ class MenuItems {
             System.out.println('«' + s.getTitle() + '»');
             System.out.print(LINE);
             System.out.println(s);
-        }
-    }
-
-    private static void printElsOfSer(Seriesable s) {
-        if (s == null) {
-            System.out.println("серия не задана");
-        } else {
-            for (int i = 0; i < s.getNumOfEls(); i++) {
-                System.out.print(i + ") ");
-
-                if (s.getEl(i) == null) {
-                    printRedLn("элемент на задан");
-                } else {
-                    System.out.println(s.getEl(i) +
-                            " (кол-во страниц -- " + s.getNumOfPagesOfEl(i) + ')');
-                }
-            }
         }
     }
     // endregion
@@ -315,11 +284,6 @@ class MenuItems {
             throw new UnsupportedOperationException("операция невозможна: серия не задана");
         } else {
             try {
-                System.out.print("название ............................... ");
-                Scanner scan = new Scanner(System.in);
-                String title = scan.nextLine();
-                s.setEl(index, title);
-
                 System.out.print("количество страниц ... ");
                 int numOfPages = printGetNumOfPages();
                 s.setNumOfPagesOfEl(index, numOfPages);
@@ -425,7 +389,7 @@ class MenuItems {
             FileOutputStream fileOutputter;
             try {
                 fileOutputter = new FileOutputStream(BYTES_FILE_WITH_SER);
-                InputAndOutputSeriesable.outputSerAsBytes(s, fileOutputter);
+                InputAndOutput.outputSerAsBytes(s, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
@@ -444,7 +408,7 @@ class MenuItems {
             FileWriter fileWriter;
             try {
                 fileWriter = new FileWriter(TEXT_FILE_WITH_SER);
-                InputAndOutputSeriesable.writeSerAsText(s, fileWriter);
+                InputAndOutput.writeSerAsText(s, fileWriter);
                 fileWriter.flush();
                 fileWriter.close();
 
@@ -463,70 +427,11 @@ class MenuItems {
             FileOutputStream fileOutputter;
             try {
                 fileOutputter = new FileOutputStream(SERIALIZED_FILE_WITH_SER);
-                InputAndOutputSeriesable.serializeSer(s, fileOutputter);
+                InputAndOutput.serializeSer(s, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
                 printGreenLn("объект успешно сериализован");
-            } catch (IOException exc) {
-                printRedLn(exc.getMessage());
-                exc.printStackTrace();
-            }
-        }
-    }
-    // endregion
-
-    // region запись массива
-    static void printOutputSarrAsBytes(Seriesable[] sarr) {
-        if (sarr == null) {
-            printRedLn("операция невозможна: массив не задан");
-        } else {
-            FileOutputStream fileOutputter;
-            try {
-                fileOutputter = new FileOutputStream(BYTES_FILE_WITH_SARR);
-                outputSarrAsBytes(sarr, fileOutputter);
-                fileOutputter.flush();
-                fileOutputter.close();
-
-                printGreenLn("объект успешно записан в байтовый поток");
-            } catch (IOException exc) {
-                printRedLn(exc.getMessage());
-                exc.printStackTrace();
-            }
-        }
-    }
-
-    static void printWriteSarrAsText(Seriesable[] sarr) {
-        if (sarr == null) {
-            printRedLn("операция невозможна: массив не задан");
-        } else {
-            FileWriter fileWriter;
-            try {
-                fileWriter = new FileWriter(TEXT_FILE_WITH_SARR);
-                writeSarrAsText(sarr, fileWriter);
-                fileWriter.flush();
-                fileWriter.close();
-
-                printGreenLn("массив успешно записан в текстовый поток");
-            } catch (IOException exc) {
-                printRedLn(exc.getMessage());
-                exc.printStackTrace();
-            }
-        }
-    }
-
-    static void printSerializeSarr(Seriesable[] sarr) {
-        if (sarr == null) {
-            printRedLn("операция невозможна: массив не задан");
-        } else {
-            FileOutputStream fileOutputter;
-            try {
-                fileOutputter = new FileOutputStream(SERIALIZED_FILE_WITH_SARR);
-                serializeSarr(sarr, fileOutputter);
-                fileOutputter.flush();
-                fileOutputter.close();
-
-                printGreenLn("массив успешно сериализован");
             } catch (IOException exc) {
                 printRedLn(exc.getMessage());
                 exc.printStackTrace();
@@ -605,74 +510,6 @@ class MenuItems {
         }
 
         return s;
-    }
-    // endregion
-
-    // region считывание массива
-    static Seriesable[] printInputBytesAsSarr() throws NullSeriesableException {
-        Seriesable[] sarr = null;
-
-        FileInputStream fileInputter;
-        try {
-            fileInputter = new FileInputStream(BYTES_FILE_WITH_SARR);
-            sarr = inputBytesAsSarr(fileInputter);
-            fileInputter.close();
-
-            printGreenLn("массив успешно считан из байтового потока (файла)");
-        } catch (IOException | NullSeriesableException | ClassNotFoundException exc) {
-            printRedLn(exc.getMessage());
-            exc.printStackTrace();
-        }
-
-        if (sarr == null) {
-            throw new NullSeriesableException("не удалось считать массив Seriesable[]");
-        }
-
-        return sarr;
-    }
-
-    static Seriesable[] printReadTextAsSarr() throws NullSeriesableException {
-        Seriesable[] sarr = null;
-
-        FileReader fileReader;
-        try {
-            fileReader = new FileReader(TEXT_FILE_WITH_SARR);
-            sarr = readTextAsSarr(fileReader);
-            fileReader.close();
-
-            printGreenLn("массив успешно считан из тектового потока (файла)");
-        } catch (IOException | NullSeriesableException | ClassNotFoundException exc) {
-            printRedLn(exc.getMessage());
-            exc.printStackTrace();
-        }
-
-        if (sarr == null) {
-            throw new NullSeriesableException("не удалось считать массив Seriesable[]");
-        }
-
-        return sarr;
-    }
-
-    static Seriesable[] printDeserializeSarr() throws NullSeriesableException {
-        Seriesable[] sarr = null;
-
-        FileInputStream fileInputter;
-        try {
-            fileInputter = new FileInputStream(SERIALIZED_FILE_WITH_SARR);
-            sarr = deserializeSarr(fileInputter);
-            fileInputter.close();
-
-            printGreenLn("массив успешно десериализована (из файла)");
-        } catch (IOException | NullSeriesableException exc) {
-            printRedLn(exc.getMessage());
-            exc.printStackTrace();
-        }
-
-        if (sarr == null) {
-            throw new NullSeriesableException("не удалось десериализовать массив Seriesable[]");
-        }
-
-        return sarr;
     }
     // endregion
 }
