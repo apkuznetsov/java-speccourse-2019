@@ -3,7 +3,7 @@ package com.company.Threads;
 import com.company.Series.Seriesable;
 
 public class SeriesableSynchronizer {
-    private Seriesable s;
+    private final Seriesable s;
     private volatile int currIndex = 0;
     private volatile boolean isElSet = false;
 

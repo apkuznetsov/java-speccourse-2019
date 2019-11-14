@@ -15,12 +15,15 @@ public class ArticlesSeries implements Seriesable, Serializable {
         numsOfPages = new int[numOfArticles];
     }
 
-    // region get
+    // region get и set
+    public int getNumOfEls() {
+        return numsOfPages.length;
+    }
+
     public String getTitle() {
         return title;
     }
 
-    // region set
     public void setTitle(String title) {
         this.title = title;
     }
@@ -39,11 +42,6 @@ public class ArticlesSeries implements Seriesable, Serializable {
 
         numOfAbstractPages = num;
     }
-
-    public int getNumOfEls() {
-        return numsOfPages.length;
-    }
-    // endregion
 
     public int getNumOfPagesOfEl(int index) {
         if (index < 0 || index >= numsOfPages.length) {
@@ -130,7 +128,7 @@ public class ArticlesSeries implements Seriesable, Serializable {
     }
     // endregion
 
-    public void outputAsBytes(OutputStream out) {
+    public void output(OutputStream out) {
         DataOutputStream dataOutputter = new DataOutputStream(out);
 
         try {
@@ -150,16 +148,24 @@ public class ArticlesSeries implements Seriesable, Serializable {
         }
     }
 
-    public void writeAsText(Writer out) {
+    public void write(Writer out) {
         PrintWriter printer = new PrintWriter(out);
 
-        printer.println(getClass().getName());
-        printer.println(title);
-        printer.println(numOfAbstractPages);
-        printer.println(numsOfPages.length);
+        printer.print(getClass().getName());
+        printer.print(' ');
+
+        printer.print(title);
+        printer.print(' ');
+
+        printer.print(numOfAbstractPages);
+        printer.print(' ');
+
+        printer.print(numsOfPages.length);
+        printer.print(' ');
 
         for (int numsOfPage : numsOfPages) {
-            printer.println(numsOfPage);
+            printer.print(numsOfPage);
+            printer.print(' ');
         }
 
         printer.flush();

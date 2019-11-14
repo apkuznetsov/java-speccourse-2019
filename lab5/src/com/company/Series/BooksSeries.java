@@ -15,12 +15,15 @@ public class BooksSeries implements Seriesable, Serializable {
         numsOfPages = new int[numOfBooks];
     }
 
-    // region get
+    // region get и set
+    public int getNumOfEls() {
+        return numsOfPages.length;
+    }
+
     public String getTitle() {
         return title;
     }
 
-    // region set
     public void setTitle(String title) {
         this.title = title;
     }
@@ -39,11 +42,6 @@ public class BooksSeries implements Seriesable, Serializable {
 
         numOfPrefacePages = num;
     }
-
-    public int getNumOfEls() {
-        return numsOfPages.length;
-    }
-    // endregion
 
     public int getNumOfPagesOfEl(int index) {
         if (index < 0 || index >= numsOfPages.length) {
@@ -130,7 +128,7 @@ public class BooksSeries implements Seriesable, Serializable {
     }
     // endregion
 
-    public void outputAsBytes(OutputStream out) {
+    public void output(OutputStream out) {
         DataOutputStream dataOutputter;
         try {
             dataOutputter = new DataOutputStream(out);
@@ -151,7 +149,7 @@ public class BooksSeries implements Seriesable, Serializable {
         }
     }
 
-    public void writeAsText(Writer out) {
+    public void write(Writer out) {
         PrintWriter printer = new PrintWriter(out);
 
         printer.println(getClass().getName());

@@ -1,14 +1,14 @@
 package com.company.Series;
 
-import com.company.Exceptions.DatabaseNotSetException;
+import com.company.Exceptions.NullSarrException;
 
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 public class Series {
-    public static ArticlesSeries[] getArticlesArrFromSarr(Seriesable[] sarr) throws DatabaseNotSetException {
+    public static ArticlesSeries[] getArticlesArrFromSarr(Seriesable[] sarr) throws NullSarrException {
         if (sarr == null) {
-            throw new DatabaseNotSetException("операция невозможна: база данных не задана");
+            throw new NullSarrException("операция невозможна: массив не задан");
         } else {
             LinkedList<Integer> indexesOfArticles = getIndexesOfArticles(sarr);
             ArticlesSeries[] as = new ArticlesSeries[indexesOfArticles.size()];
@@ -21,9 +21,9 @@ public class Series {
         }
     }
 
-    private static LinkedList<Integer> getIndexesOfArticles(Seriesable[] sarr) throws DatabaseNotSetException {
+    private static LinkedList<Integer> getIndexesOfArticles(Seriesable[] sarr) throws NullSarrException {
         if (sarr == null) {
-            throw new DatabaseNotSetException("операция невозможна: сборник статей не задан");
+            throw new NullSarrException("операция невозможна: сборник статей не задан");
         } else {
             LinkedList<Integer> indexesOfArticles = new LinkedList<>();
 
@@ -37,9 +37,9 @@ public class Series {
         }
     }
 
-    public static BooksSeries[] getBooksArrFromSarr(Seriesable[] sarr) throws DatabaseNotSetException {
+    public static BooksSeries[] getBooksArrFromSarr(Seriesable[] sarr) throws NullSarrException {
         if (sarr == null) {
-            throw new DatabaseNotSetException("операция невозможна: сборник книг не задан");
+            throw new NullSarrException("операция невозможна: сборник книг не задан");
         } else {
             LinkedList<Integer> indexesOfBooks = getIndexesOfBooks(sarr);
             BooksSeries[] bs = new BooksSeries[indexesOfBooks.size()];
@@ -52,9 +52,9 @@ public class Series {
         }
     }
 
-    private static LinkedList<Integer> getIndexesOfBooks(Seriesable[] sarr) throws DatabaseNotSetException {
+    private static LinkedList<Integer> getIndexesOfBooks(Seriesable[] sarr) throws NullSarrException {
         if (sarr == null) {
-            throw new DatabaseNotSetException("операция невозможна: сборник книг не задан");
+            throw new NullSarrException("операция невозможна: сборник книг не задан");
         } else {
             LinkedList<Integer> indexesOfBooks = new LinkedList<>();
 
@@ -68,9 +68,9 @@ public class Series {
         }
     }
 
-    public static Seriesable[] getSarrWithTwoElsWithSameSumOfPagesWithoutStart(Seriesable[] sarr) throws DatabaseNotSetException {
+    public static Seriesable[] getSarrWithTwoElsWithSameSumOfPagesWithoutStart(Seriesable[] sarr) throws NullSarrException {
         if (sarr == null) {
-            throw new DatabaseNotSetException("операция невозможна: база данных не задана");
+            throw new NullSarrException("операция невозможна: массив не задан");
         } else {
             int[] sumsOfPagesWithoutStart = getSumsOfPagesWithoutStart(sarr);
 
@@ -94,9 +94,9 @@ public class Series {
         }
     }
 
-    private static int[] getSumsOfPagesWithoutStart(Seriesable[] sarr) throws DatabaseNotSetException {
+    private static int[] getSumsOfPagesWithoutStart(Seriesable[] sarr) throws NullSarrException {
         if (sarr == null) {
-            throw new DatabaseNotSetException("операция невозможна: база данных не задана");
+            throw new NullSarrException("операция невозможна: массив не задан");
         } else {
             int[] sumsOfPagesWithoutStart = new int[sarr.length];
 

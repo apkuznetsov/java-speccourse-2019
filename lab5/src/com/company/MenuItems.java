@@ -16,9 +16,9 @@ import static com.company.Series.Series.*;
 class MenuItems {
     static final String LINE = "-------------------------------------------------------------------------------\n";
 
-    private static final String BYTES_FILE_WITH_SER = "serAsBytes.bin";
-    private static final String TEXT_FILE_WITH_SER = "serAsText.txt";
-    private static final String SERIALIZED_FILE_WITH_SER = "serSerialized.bin";
+    private static final String BYTES_FILE = "bytes.bin";
+    private static final String TEXT_FILE = "text.txt";
+    private static final String OBJECT_FILE = "object.bin";
 
     // region принты
     static void printRed(String str) {
@@ -388,8 +388,8 @@ class MenuItems {
         } else {
             FileOutputStream fileOutputter;
             try {
-                fileOutputter = new FileOutputStream(BYTES_FILE_WITH_SER);
-                InputAndOutput.outputSerAsBytes(s, fileOutputter);
+                fileOutputter = new FileOutputStream(BYTES_FILE);
+                InputAndOutput.outputSeriesable(s, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
@@ -407,8 +407,8 @@ class MenuItems {
         } else {
             FileWriter fileWriter;
             try {
-                fileWriter = new FileWriter(TEXT_FILE_WITH_SER);
-                InputAndOutput.writeSerAsText(s, fileWriter);
+                fileWriter = new FileWriter(TEXT_FILE);
+                InputAndOutput.writeSeriesable(s, fileWriter);
                 fileWriter.flush();
                 fileWriter.close();
 
@@ -426,8 +426,8 @@ class MenuItems {
         } else {
             FileOutputStream fileOutputter;
             try {
-                fileOutputter = new FileOutputStream(SERIALIZED_FILE_WITH_SER);
-                InputAndOutput.serializeSer(s, fileOutputter);
+                fileOutputter = new FileOutputStream(OBJECT_FILE);
+                InputAndOutput.serializeSeriesable(s, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
@@ -446,8 +446,8 @@ class MenuItems {
 
         FileInputStream fileInputter;
         try {
-            fileInputter = new FileInputStream(BYTES_FILE_WITH_SER);
-            s = inputBytesAsSer(fileInputter);
+            fileInputter = new FileInputStream(BYTES_FILE);
+            s = inputSeriesable(fileInputter);
             fileInputter.close();
 
             printGreenLn("объект успешно считан из байтового потока (файла)");
@@ -469,10 +469,10 @@ class MenuItems {
         FileReader fileReader;
         BufferedReader bufferedReader;
         try {
-            fileReader = new FileReader(TEXT_FILE_WITH_SER);
+            fileReader = new FileReader(TEXT_FILE);
             bufferedReader = new BufferedReader(fileReader);
 
-            s = readTextAsSer(bufferedReader);
+            s = readSeriesable(bufferedReader);
 
             bufferedReader.close();
             fileReader.close();
@@ -495,8 +495,8 @@ class MenuItems {
 
         FileInputStream fileInputter;
         try {
-            fileInputter = new FileInputStream(SERIALIZED_FILE_WITH_SER);
-            s = deserializeSer(fileInputter);
+            fileInputter = new FileInputStream(OBJECT_FILE);
+            s = deserializeSeriesable(fileInputter);
             fileInputter.close();
 
             printGreenLn("объект успешно десериализован (из файла)");

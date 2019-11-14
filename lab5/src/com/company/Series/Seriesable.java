@@ -16,6 +16,8 @@ public interface Seriesable {
     int MIN_NUM_OF_PAGES_OF_EL = 1;
     int MAX_NUM_OF_PAGES_OF_EL = 1000;
 
+    int getNumOfEls();
+
     String getTitle();
 
     void setTitle(String title);
@@ -24,15 +26,13 @@ public interface Seriesable {
 
     void setNumOfStartPages(int num);
 
-    int getNumOfEls();
-
     int getNumOfPagesOfEl(int index);
 
     int getSumOfPagesWithoutStart();
 
     void setNumOfPagesOfEl(int index, int num);
 
-    void outputAsBytes(OutputStream out); // запись в байтовый поток
+    void output(OutputStream out);
 
-    void writeAsText(Writer out); // запись в символьный поток
+    void write(Writer out);
 }

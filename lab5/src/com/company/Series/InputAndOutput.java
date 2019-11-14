@@ -6,15 +6,15 @@ import java.io.*;
 
 public class InputAndOutput {
     // region запись объекта
-    public static void outputSerAsBytes(Seriesable s, OutputStream out) {
-        s.outputAsBytes(out);
+    public static void outputSeriesable(Seriesable s, OutputStream out) {
+        s.output(out);
     }
 
-    public static void writeSerAsText(Seriesable s, Writer out) {
-        s.writeAsText(out);
+    public static void writeSeriesable(Seriesable s, Writer out) {
+        s.write(out);
     }
 
-    public static void serializeSer(Seriesable s, OutputStream out) {
+    public static void serializeSeriesable(Seriesable s, OutputStream out) {
         ObjectOutputStream serializer;
         try {
             serializer = new ObjectOutputStream(out);
@@ -28,7 +28,7 @@ public class InputAndOutput {
     // endregion
 
     // region считывание объекта
-    public static Seriesable inputBytesAsSer(InputStream in) throws NullSeriesableException, ClassNotFoundException {
+    public static Seriesable inputSeriesable(InputStream in) throws NullSeriesableException, ClassNotFoundException {
         Seriesable s;
 
         DataInputStream dataInputter;
@@ -63,31 +63,40 @@ public class InputAndOutput {
         return s;
     }
 
-    private static Seriesable getNewSerByClassName(String className, String title, int numOfStartPages, int numOfEls) throws ClassNotFoundException {
-        if (className.equals(ArticlesSeries.class.getName())) {
-            return new ArticlesSeries(title, numOfStartPages, numOfEls);
-        } else if (className.equals(BooksSeries.class.getName())) {
-            return new BooksSeries(title, numOfStartPages, numOfEls);
-        } else {
-            throw new ClassNotFoundException("ошибка: такого класса не существует");
-        }
-    }
-
-    public static Seriesable readTextAsSer(BufferedReader bf) throws NullSeriesableException, ClassNotFoundException {
+    public static Seriesable readSeriesable(Reader in) throws NullSeriesableException, ClassNotFoundException {
         Seriesable s;
 
+        StreamTokenizer st;
         try {
-            String className = bf.readLine();
-            String title = bf.readLine();
-            int numOfStartPages = Integer.parseInt(bf.readLine());
-            int numOfEls = Integer.parseInt(bf.readLine());
+            st = new StreamTokenizer(in);
+
+            st.nextToken();
+            String className = st.sval;
+
+            StringBuilder sbTitle = new StringBuilder();
+            String currWord;
+            st.nextToken();
+            while (st.ttype == StreamTokenizer.TT_WORD) {
+                currWord = st.sval;
+                sbTitle.append(currWord);
+                sbTitle.append(' ');
+
+                st.nextToken();
+            }
+            String title = sbTitle.toString();
+
+            int numOfStartPages = (int) st.nval;
+
+            st.nextToken();
+            int numOfEls = (int) st.nval;
 
             s = getNewSerByClassName(className, title, numOfStartPages, numOfEls);
 
             final int len = s.getNumOfEls();
             int numOfPages;
             for (int index = 0; index < len; index++) {
-                numOfPages = Integer.parseInt(bf.readLine());
+                st.nextToken();
+                numOfPages = (int) st.nval;
                 s.setNumOfPagesOfEl(index, numOfPages);
             }
         } catch (IOException | NumberFormatException exc) {
@@ -105,7 +114,17 @@ public class InputAndOutput {
         return s;
     }
 
-    public static Seriesable deserializeSer(InputStream in) throws NullSeriesableException {
+    private static Seriesable getNewSerByClassName(String className, String title, int numOfStartPages, int numOfEls) throws ClassNotFoundException {
+        if (className.equals(ArticlesSeries.class.getName())) {
+            return new ArticlesSeries(title, numOfStartPages, numOfEls);
+        } else if (className.equals(BooksSeries.class.getName())) {
+            return new BooksSeries(title, numOfStartPages, numOfEls);
+        } else {
+            throw new ClassNotFoundException("ошибка: такого класса не существует");
+        }
+    }
+
+    public static Seriesable deserializeSeriesable(InputStream in) throws NullSeriesableException {
         Seriesable s;
 
         ObjectInputStream deserializer;
