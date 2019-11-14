@@ -144,4 +144,8 @@ public class InputAndOutput {
         return s;
     }
     // endregion
+
+    Seriesable synchronizedSeriesable(Seriesable s) {
+        return new SynchronizedSeriesable(s);
+    }
 }
