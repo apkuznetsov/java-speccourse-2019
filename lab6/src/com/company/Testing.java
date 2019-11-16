@@ -1,7 +1,6 @@
 package com.company;
 
-import com.company.Series.ArticlesSeries;
-import com.company.Series.BooksSeries;
+import com.company.Series.Series;
 import com.company.Seriesable.Seriesable;
 
 import java.util.Random;
@@ -42,15 +41,7 @@ public class Testing {
 
     private static Seriesable getSerWithRandGeneratedType(String title, int numOfStartPages, int numOfEls) {
         Seriesable s;
-
-        int choice = getRandInt(1, 2);
-
-        if (choice == 1) {
-            s = new ArticlesSeries(title, numOfStartPages, numOfEls);
-        } else {
-            s = new BooksSeries(title, numOfStartPages, numOfEls);
-        }
-
+        s = Series.createInstance(title, numOfStartPages, numOfEls);
         return s;
     }
 

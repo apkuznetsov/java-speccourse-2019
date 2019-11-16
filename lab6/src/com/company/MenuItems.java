@@ -4,13 +4,12 @@ import com.company.Exceptions.IllegalIndexException;
 import com.company.Exceptions.NullSeriesableException;
 import com.company.Series.ArticlesSeries;
 import com.company.Series.BooksSeries;
-import com.company.Series.InputAndOutput;
+import com.company.Series.Series;
 import com.company.Seriesable.Seriesable;
 
 import java.io.*;
 import java.util.Scanner;
 
-import static com.company.Series.InputAndOutput.*;
 import static com.company.Series.Series.*;
 
 class MenuItems {
@@ -171,66 +170,25 @@ class MenuItems {
                     "(нумерация начинается с нуля):");
             int index = printGetIndex(db.length - 1);
 
-            Scanner scan = new Scanner(System.in);
-            String str;
-
             System.out.print("задание элемента под индексом " + index + '\n' + LINE);
-            do {
-                System.out.print("выберите тип элемента\n" +
-                        LINE +
-                        "1 -- " + ArticlesSeries.class.getName() + "\n" +
-                        "2 -- " + BooksSeries.class.getName() + "\n" +
-                        LINE +
-                        "выбор ... ");
-                str = scan.nextLine();
-                System.out.println();
 
-                if (str.equals("1")) {
-                    db[index] = printGetArticlesSerThenSet();
-                    break;
-                } else if (str.equals("2")) {
-                    db[index] = printGetBooksSerThenSet();
-                    break;
-                } else {
-                    printRedLn("ошибка: неверный пункт меню");
-                }
-            } while (true);
+            db[index] = printCreateSer();
+            printSetElsOfSer(db[index]);
         }
     }
 
-    private static ArticlesSeries printGetArticlesSerThenSet() {
+    static Seriesable printCreateSer() {
+        Scanner scan = new Scanner(System.in);
         System.out.print("введите название сборника ................................. ");
-        Scanner scan = new Scanner(System.in);
         String title = scan.nextLine();
 
-        int numOfArticles = printGetNumOfElsInSer();
-        int numOfAbstractPages = printGetNumOfStartPages();
-        ArticlesSeries as = new ArticlesSeries(title, numOfAbstractPages, numOfArticles);
-        printGreenLn("сборник успешно создан");
-        System.out.println();
+        int numOfStartPages = printGetNumOfStartPages();
 
-        System.out.print("заполните сборник названиями статей и их количеством страниц\n" + LINE);
-        printSetElsOfSer(as);
+        int numOfEls = printGetNumOfElsInSer();
 
-        return as;
+        return createInstance(title, numOfStartPages, numOfEls);
     }
 
-    private static BooksSeries printGetBooksSerThenSet() {
-        System.out.print("введите название сборника ........................... ");
-        Scanner scan = new Scanner(System.in);
-        String title = scan.nextLine();
-
-        int numOfBooks = printGetNumOfElsInSer();
-        int numOfPrefacePages = printGetNumOfStartPages();
-        BooksSeries bs = new BooksSeries(title, numOfPrefacePages, numOfBooks);
-        printGreenLn("сборник успешно создан");
-        System.out.println();
-
-        System.out.print("заполните сборник названиями книг и их количеством страниц\n" + LINE);
-        printSetElsOfSer(bs);
-
-        return bs;
-    }
 
     private static int printGetNumOfElsInSer() {
         int num;
@@ -266,7 +224,7 @@ class MenuItems {
         } while (true);
     }
 
-    private static void printSetElsOfSer(Seriesable s) {
+    static void printSetElsOfSer(Seriesable s) {
         if (s == null) {
             printRedLn("операция невозможна: серия не задана");
         } else {
@@ -319,36 +277,6 @@ class MenuItems {
             }
         } while (true);
     }
-
-    static Seriesable printGetSerThenSetIt() {
-        Seriesable s;
-
-        Scanner scan = new Scanner(System.in);
-        String str;
-
-        do {
-            System.out.print("выберите тип элемента\n" +
-                    LINE +
-                    "1 -- " + ArticlesSeries.class.getName() + "\n" +
-                    "2 -- " + BooksSeries.class.getName() + "\n" +
-                    LINE +
-                    "выбор ... ");
-            str = scan.nextLine();
-            System.out.println();
-
-            if (str.equals("1")) {
-                s = printGetArticlesSerThenSet();
-                break;
-            } else if (str.equals("2")) {
-                s = printGetBooksSerThenSet();
-                break;
-            } else {
-                printRedLn("ошибка: неверный пункт меню");
-            }
-        } while (true);
-
-        return s;
-    }
     // endregion
 
     // region деление базы
@@ -395,7 +323,7 @@ class MenuItems {
             FileOutputStream fileOutputter;
             try {
                 fileOutputter = new FileOutputStream(BYTES_FILE);
-                InputAndOutput.outputSeriesable(s, fileOutputter);
+                Series.outputSeriesable(s, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
@@ -414,7 +342,7 @@ class MenuItems {
             FileWriter fileWriter;
             try {
                 fileWriter = new FileWriter(TEXT_FILE);
-                InputAndOutput.writeSeriesable(s, fileWriter);
+                Series.writeSeriesable(s, fileWriter);
                 fileWriter.flush();
                 fileWriter.close();
 
@@ -433,7 +361,7 @@ class MenuItems {
             FileOutputStream fileOutputter;
             try {
                 fileOutputter = new FileOutputStream(OBJECT_FILE);
-                InputAndOutput.serializeSeriesable(s, fileOutputter);
+                Series.serializeSeriesable(s, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 

@@ -138,7 +138,8 @@ class Program {
 
                 case "13":
                     printTask("13 -- создать и заполнить объект");
-                    s = printGetSerThenSetIt();
+                    s = printCreateSer();
+                    printSetElsOfSer(s);
                     break;
 
                 case "14":

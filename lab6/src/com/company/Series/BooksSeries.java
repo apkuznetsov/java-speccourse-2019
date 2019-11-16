@@ -175,7 +175,7 @@ public class BooksSeries implements Seriesable, Serializable {
 
     @NotNull
     @Override
-    public Iterator iterator() {
+    public Iterator<Integer> iterator() {
         return new NumsOfPagesIterator(this.numsOfPages);
     }
 }
