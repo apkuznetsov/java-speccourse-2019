@@ -1,6 +1,6 @@
 package com.company.Threads;
 
-import com.company.Series.Seriesable;
+import com.company.Seriesable.Seriesable;
 
 public class SeriesableSynchronizer {
     private final Seriesable s;

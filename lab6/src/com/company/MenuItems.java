@@ -5,7 +5,7 @@ import com.company.Exceptions.NullSeriesableException;
 import com.company.Series.ArticlesSeries;
 import com.company.Series.BooksSeries;
 import com.company.Series.InputAndOutput;
-import com.company.Series.Seriesable;
+import com.company.Seriesable.Seriesable;
 
 import java.io.*;
 import java.util.Scanner;

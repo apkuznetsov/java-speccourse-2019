@@ -1,6 +1,7 @@
 package com.company.Series;
 
 import com.company.Exceptions.IllegalIndexException;
+import com.company.Seriesable.Seriesable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;

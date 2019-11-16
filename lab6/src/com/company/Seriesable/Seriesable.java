@@ -1,4 +1,4 @@
-package com.company.Series;
+package com.company.Seriesable;
 
 import org.jetbrains.annotations.NotNull;
 

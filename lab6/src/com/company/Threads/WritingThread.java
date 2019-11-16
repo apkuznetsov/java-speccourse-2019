@@ -1,6 +1,6 @@
 package com.company.Threads;
 
-import com.company.Series.Seriesable;
+import com.company.Seriesable.Seriesable;
 import com.company.Testing;
 
 public class WritingThread extends Thread {

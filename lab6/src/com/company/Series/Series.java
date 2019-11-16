@@ -1,11 +1,16 @@
 package com.company.Series;
 
 import com.company.Exceptions.NullSarrException;
+import com.company.Factories.ArticlesSeriesFactory;
+import com.company.Factories.SeriesableFactory;
+import com.company.Seriesable.Seriesable;
 
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 public class Series {
+    private SeriesableFactory factory = new ArticlesSeriesFactory();
+
     public static ArticlesSeries[] getArticlesArrFromSarr(Seriesable[] sarr) throws NullSarrException {
         if (sarr == null) {
             throw new NullSarrException("операция невозможна: массив не задан");
@@ -106,5 +111,9 @@ public class Series {
 
             return sumsOfPagesWithoutStart;
         }
+    }
+
+    public void setSeriesableFactory(SeriesableFactory sf) {
+        this.factory = sf;
     }
 }

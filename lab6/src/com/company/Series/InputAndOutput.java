@@ -1,6 +1,8 @@
 package com.company.Series;
 
 import com.company.Exceptions.NullSeriesableException;
+import com.company.Seriesable.Seriesable;
+import com.company.Seriesable.SynchronizedSeriesable;
 
 import java.io.*;
 
