@@ -138,9 +138,10 @@ public class ArticlesSeries implements Seriesable, Serializable {
     // endregion
 
     public void output(OutputStream out) {
-        DataOutputStream dataOutputter = new DataOutputStream(out);
-
+        DataOutputStream dataOutputter;
         try {
+            dataOutputter = new DataOutputStream(out);
+
             dataOutputter.writeUTF(getClass().getName());
             dataOutputter.writeUTF(title);
             dataOutputter.writeInt(numOfAbstractPages);
