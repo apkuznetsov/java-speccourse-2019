@@ -11,6 +11,12 @@ public class ArticlesSeries implements Seriesable, Serializable {
     private int numOfAbstractPages;
     private int[] numsOfPages;
 
+    public ArticlesSeries() {
+        this.title = "Моё название";
+        this.numOfAbstractPages = Seriesable.DEFAULT_NUM_OF_START_PAGES;
+        this.numsOfPages = new int[Seriesable.DEFAULT_NUM_OF_ELS];
+    }
+
     public ArticlesSeries(String title, int numOfAbstractPages, int numOfArticles) {
         this.title = title;
         this.numOfAbstractPages = numOfAbstractPages;

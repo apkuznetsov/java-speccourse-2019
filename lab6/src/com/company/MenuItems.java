@@ -239,9 +239,9 @@ class MenuItems {
             System.out.print("задание количества элементов в серии: ... ");
             num = printGetInt();
 
-            if (num < Seriesable.MIN_NUM_OF_ELS_OF_SER) {
-                printRedLn("серия должна содержать хотя бы " + Seriesable.MIN_NUM_OF_ELS_OF_SER + " элемент/-та/-ов");
-            } else if (num > Seriesable.MAX_NUM_OF_ELS_OF_SER) {
+            if (num < Seriesable.MIN_NUM_OF_ELS) {
+                printRedLn("серия должна содержать хотя бы " + Seriesable.MIN_NUM_OF_ELS + " элемент/-та/-ов");
+            } else if (num > Seriesable.MAX_NUM_OF_ELS) {
                 printRedLn("слишком большая серия");
             } else {
                 return num;

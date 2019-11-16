@@ -11,6 +11,12 @@ public class BooksSeries implements Seriesable, Serializable {
     private int numOfPrefacePages;
     private int[] numsOfPages;
 
+    public BooksSeries() {
+        this.title = "Моё название";
+        this.numOfPrefacePages = Seriesable.DEFAULT_NUM_OF_START_PAGES;
+        this.numsOfPages = new int[Seriesable.DEFAULT_NUM_OF_ELS];
+    }
+
     public BooksSeries(String title, int numOfPrefacePages, int numOfBooks) {
         this.title = title;
         this.numOfPrefacePages = numOfPrefacePages;
