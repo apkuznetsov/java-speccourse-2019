@@ -1,8 +1,8 @@
 package com.company;
 
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.text.PlainDocument;
 
 public class Frame extends javax.swing.JFrame {
     private static final String ACTION_COMMAND_1 = "plaf1";
@@ -12,10 +12,7 @@ public class Frame extends javax.swing.JFrame {
     private static final String PLAF_1 = "javax.swing.plaf.metal.MetalLookAndFeel";
     private static final String PLAF_2 = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
     private static final String PLAF_3 = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
-    
-    private PlainDocument filterMinNumbTextField;
-    private PlainDocument filterMaxNumbTextField;
-    
+     
     private Guesser guesser;
     int estimatedNumb;
     
@@ -24,8 +21,6 @@ public class Frame extends javax.swing.JFrame {
         addRadioButtonsToGroup();
         changePlaf(PLAF_1);
         
-        setMinAndMaxNumbs();
-        setMinAndMaxNumsFilters();
         createGuesser();
         enableStarting();
         disableGuessing();
@@ -35,15 +30,7 @@ public class Frame extends javax.swing.JFrame {
         chooseStyleRadioButtonGroup.add(plafRadioButton1);
         chooseStyleRadioButtonGroup.add(plafRadioButton2);
         chooseStyleRadioButtonGroup.add(plafRadioButton3);
-        
-        plafRadioButton1.setActionCommand(ACTION_COMMAND_1);
-        plafRadioButton2.setActionCommand(ACTION_COMMAND_2);
-        plafRadioButton3.setActionCommand(ACTION_COMMAND_3);
-        
-        plafRadioButton1.setText(PLAF_1);
-        plafRadioButton2.setText(PLAF_2);
-        plafRadioButton3.setText(PLAF_3);
-        
+              
         plafRadioButton1.setSelected(true);
     }
       
@@ -73,22 +60,9 @@ public class Frame extends javax.swing.JFrame {
         }
     }
     
-    private void setMinAndMaxNumbs() {
-        minNumbTextField.setText(String.valueOf(Guesser.DEFAULT_MIN_NUMB));
-        maxNumbTextField.setText(String.valueOf(Guesser.DEFAULT_MAX_NUMB));
-    }
-    
-    private void setMinAndMaxNumsFilters() {
-        filterMinNumbTextField = (PlainDocument) minNumbTextField.getDocument();
-        filterMinNumbTextField.setDocumentFilter(new DigitFilter());
-        
-        filterMaxNumbTextField = (PlainDocument) maxNumbTextField.getDocument();
-        filterMaxNumbTextField.setDocumentFilter(new DigitFilter());
-    } 
-    
     private void createGuesser() {
-        int min = Integer.parseInt(minNumbTextField.getText());
-        int max = Integer.parseInt(maxNumbTextField.getText());
+        int min = (int)minNumbSpinner.getValue();
+        int max = (int)maxNumbSpinner.getValue();
         guesser = new Guesser(min, max);
     }
     
@@ -97,8 +71,8 @@ public class Frame extends javax.swing.JFrame {
         enableGuessing();
         
         try {
-            guesser.setMinNumb(Integer.parseInt(minNumbTextField.getText()));
-            guesser.setMaxNumb(Integer.parseInt(maxNumbTextField.getText()));
+            guesser.setMinNumb((int)minNumbSpinner.getValue());
+            guesser.setMaxNumb((int)maxNumbSpinner.getValue());
         } catch (Exception exc) {
             programTextArea.append(exc.getMessage());
             programTextArea.append(System.lineSeparator());
@@ -114,9 +88,9 @@ public class Frame extends javax.swing.JFrame {
         programTextArea.append(System.lineSeparator());
     }
     
-    private void disableStarting() {
-        minNumbTextField.setEnabled(false);
-        maxNumbTextField.setEnabled(false);
+    private void disableStarting() {    
+        minNumbSpinner.setEnabled(false);
+        maxNumbSpinner.setEnabled(false);
         startButton.setEnabled(false);
     }
     
@@ -136,8 +110,8 @@ public class Frame extends javax.swing.JFrame {
     }
     
     private void enableStarting() {
-        minNumbTextField.setEnabled(true);
-        maxNumbTextField.setEnabled(true);
+        minNumbSpinner.setEnabled(true);
+        maxNumbSpinner.setEnabled(true);
         startButton.setEnabled(true);
     }
     
@@ -151,7 +125,8 @@ public class Frame extends javax.swing.JFrame {
         if (guesser.getMinNumb() == guesser.getMaxNumb()) {
             youAreCheater();
         } else {
-            maxNumbTextField.setText(Integer.toString(estimatedNumb - 1));
+            final int newMax = estimatedNumb - 1;
+            maxNumbSpinner.setValue((Object)newMax);
             guess();
         }
     }
@@ -169,7 +144,8 @@ public class Frame extends javax.swing.JFrame {
         if (guesser.getMinNumb() == guesser.getMaxNumb()) {
             youAreCheater();
         } else {
-            minNumbTextField.setText(Integer.toString(estimatedNumb + 1));
+            final int newMin = estimatedNumb + 1;
+            minNumbSpinner.setValue((Object)newMin);
             guess();
         }
     }
@@ -185,9 +161,7 @@ public class Frame extends javax.swing.JFrame {
 
         chooseStyleRadioButtonGroup = new javax.swing.ButtonGroup();
         minAndMaxLabel = new javax.swing.JLabel();
-        minNumbTextField = new javax.swing.JTextField();
         minLabel = new javax.swing.JLabel();
-        maxNumbTextField = new javax.swing.JTextField();
         maxLabel = new javax.swing.JLabel();
         programScrollPane = new javax.swing.JScrollPane();
         programTextArea = new javax.swing.JTextArea();
@@ -199,17 +173,15 @@ public class Frame extends javax.swing.JFrame {
         plafRadioButton2 = new javax.swing.JRadioButton();
         plafRadioButton3 = new javax.swing.JRadioButton();
         chooseStyleLabel = new javax.swing.JLabel();
+        minNumbSpinner = new javax.swing.JSpinner();
+        maxNumbSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         minAndMaxLabel.setText("значения диапазона:");
 
-        minNumbTextField.setText("0");
-
         minLabel.setText("минимальное");
-
-        maxNumbTextField.setText("1000");
 
         maxLabel.setText("максимальное");
 
@@ -245,21 +217,24 @@ public class Frame extends javax.swing.JFrame {
             }
         });
 
-        plafRadioButton1.setText("jRadioButton1");
+        plafRadioButton1.setText(PLAF_1);
+        plafRadioButton1.setActionCommand(ACTION_COMMAND_1);
         plafRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 plafRadioButton1ActionPerformed(evt);
             }
         });
 
-        plafRadioButton2.setText("jRadioButton1");
+        plafRadioButton2.setText(PLAF_2);
+        plafRadioButton2.setActionCommand(ACTION_COMMAND_2);
         plafRadioButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 plafRadioButton1ActionPerformed(evt);
             }
         });
 
-        plafRadioButton3.setText("jRadioButton1");
+        plafRadioButton3.setText(PLAF_3);
+        plafRadioButton3.setActionCommand(ACTION_COMMAND_3);
         plafRadioButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 plafRadioButton1ActionPerformed(evt);
@@ -268,6 +243,10 @@ public class Frame extends javax.swing.JFrame {
 
         chooseStyleLabel.setText("стиль:");
         chooseStyleLabel.setToolTipText("");
+
+        minNumbSpinner.setModel(new SpinnerNumberModel(Guesser.DEFAULT_MIN_NUMB, Guesser.DEFAULT_MIN_NUMB, Guesser.DEFAULT_MAX_NUMB, 1));
+
+        maxNumbSpinner.setModel(new SpinnerNumberModel(Guesser.DEFAULT_MAX_NUMB, Guesser.DEFAULT_MIN_NUMB, Guesser.DEFAULT_MAX_NUMB, 1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -283,19 +262,19 @@ public class Frame extends javax.swing.JFrame {
                     .addComponent(guessMoreButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(minLabel)
-                                    .addComponent(maxLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(maxNumbTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(minNumbTextField)))
                             .addComponent(plafRadioButton1)
                             .addComponent(plafRadioButton2)
                             .addComponent(plafRadioButton3)
                             .addComponent(chooseStyleLabel))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(minLabel)
+                            .addComponent(maxLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(minNumbSpinner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(maxNumbSpinner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(programScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
                 .addContainerGap())
@@ -310,11 +289,11 @@ public class Frame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(minLabel)
-                            .addComponent(minNumbTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(minNumbSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(maxLabel)
-                            .addComponent(maxNumbTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(maxNumbSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(startButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -383,10 +362,10 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JButton guessLessButton;
     private javax.swing.JButton guessMoreButton;
     private javax.swing.JLabel maxLabel;
-    private javax.swing.JTextField maxNumbTextField;
+    private javax.swing.JSpinner maxNumbSpinner;
     private javax.swing.JLabel minAndMaxLabel;
     private javax.swing.JLabel minLabel;
-    private javax.swing.JTextField minNumbTextField;
+    private javax.swing.JSpinner minNumbSpinner;
     private javax.swing.JRadioButton plafRadioButton1;
     private javax.swing.JRadioButton plafRadioButton2;
     private javax.swing.JRadioButton plafRadioButton3;
