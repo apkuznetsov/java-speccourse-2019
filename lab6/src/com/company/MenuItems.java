@@ -2,6 +2,9 @@ package com.company;
 
 import com.company.Exceptions.IllegalIndexException;
 import com.company.Exceptions.NullSeriesableException;
+import com.company.Factories.ArticlesSeriesFactory;
+import com.company.Factories.BooksSeriesFactory;
+import com.company.Factories.SeriesableFactory;
 import com.company.Series.ArticlesSeries;
 import com.company.Series.BooksSeries;
 import com.company.Series.Series;
@@ -160,7 +163,7 @@ class MenuItems {
     }
     // endregion
 
-    // region геты и сеты БД + объекта
+    // region геты и сеты базы + объекта
     static void printSetElOfSarr(Seriesable[] db) {
         if (db == null) {
             printRedLn("операция невозможна: база данных не задана");
@@ -446,4 +449,34 @@ class MenuItems {
         return s;
     }
     // endregion
+
+    static void printSetSeriesableFactory() {
+        String menuItem;
+        Scanner scan = new Scanner(System.in);
+        do {
+            System.out.print("создавать по-умолчанию объекты следующего типа:\n" +
+                    LINE +
+                    " 1 -- Articles Series\n" +
+                    " 2 --    Books Series\n" +
+                    LINE +
+                    "выбор ... ");
+            menuItem = scan.nextLine();
+
+            SeriesableFactory sf;
+            switch (menuItem) {
+                case "1":
+                    sf = new ArticlesSeriesFactory();
+                    break;
+                case "2":
+                    sf = new BooksSeriesFactory();
+                    break;
+                default:
+                    printRedLn("ошибка: неверный пункт меню");
+                    continue;
+            }
+            printGreenLn("фабрика успешно установлена");
+            Series.setSeriesableFactory(sf);
+            break;
+        } while (true);
+    }
 }

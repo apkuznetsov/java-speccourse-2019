@@ -68,4 +68,9 @@ public class SynchronizedSeriesable implements Seriesable {
     public Iterator<Integer> iterator() {
         return s.iterator();
     }
+
+    @Override
+    public String toString() {
+        return s.toString();
+    }
 }

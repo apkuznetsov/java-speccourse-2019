@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Iterator;
 
-
 public class UnmodifiableSeriesable implements Seriesable {
     private final Seriesable s;
 
@@ -68,5 +67,10 @@ public class UnmodifiableSeriesable implements Seriesable {
     @Override
     public Iterator<Integer> iterator() {
         return s.iterator();
+    }
+
+    @Override
+    public String toString() {
+        return s.toString();
     }
 }

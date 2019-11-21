@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 public class Series {
-    // для фабрик
+    // region для фабрик
     private static SeriesableFactory factory = new ArticlesSeriesFactory();
 
     public static void setSeriesableFactory(SeriesableFactory sf) {
@@ -28,11 +28,11 @@ public class Series {
         return factory.createInstance(title, numOfStartPages, numOfEls);
     }
 
-    public static Seriesable synchronizedSeriesable(Seriesable s) {
+    public static Seriesable getSynchronizedSeriesable(Seriesable s) {
         return new SynchronizedSeriesable(s);
     }
 
-    public static Seriesable unmodifiableSeriesable(Seriesable s) {
+    public static Seriesable getUnmodifiableSeriesable(Seriesable s) {
         return new UnmodifiableSeriesable(s);
     }
     // endregion

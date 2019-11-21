@@ -2,6 +2,7 @@ package com.company;
 
 import com.company.Exceptions.NullSeriesableException;
 import com.company.Series.ArticlesSeries;
+import com.company.Series.Series;
 import com.company.Seriesable.Seriesable;
 import com.company.Threads.*;
 
@@ -30,7 +31,13 @@ class Program {
                     "      чтобы были элементы,\n" +
                     "      у которых функциональные методы возвращают одинаковый результат\n" +
                     LINE +
-                    "-3 -- создать и заполнить объект Seriesable автоматически\n" +
+                    "-3 -- создать и заполнить объект автоматически\n" +
+                    "-4 -- создать заполненный автоматически синхронизированный объект\n" +
+                    "-5 -- создать заполненный автоматически неизменяемый объект\n" +
+                    LINE +
+                    "-6 -- изменить поле-заголовок объекта\n" +
+                    LINE +
+                    "-7 -- установить фабрику\n" +
                     LINE +
                     LINE +
                     "РАБОТА С БАЗОЙ:\n" +
@@ -94,6 +101,31 @@ class Program {
                 case "-3":
                     printTask("-3 -- создать и заполнить объект Seriesable автоматически");
                     s = Testing.getSerThenSetAutomatically();
+                    break;
+
+                case "-4":
+                    printTask("-4 -- создать заполненный автоматически синхронизированный объект");
+                    s = Series.getSynchronizedSeriesable(Testing.getSerThenSetAutomatically());
+                    break;
+
+                case "-5":
+                    printTask("-5 -- создать заполненный автоматически неизменяемый объект");
+                    s = Series.getUnmodifiableSeriesable(Testing.getSerThenSetAutomatically());
+                    break;
+
+                case "-6":
+                    printTask("-6 -- изменить поле-заголовок объекта");
+                    try {
+                        s.setTitle("Привет, Мир!");
+                    } catch (Exception exc) {
+                        printRedLn(exc.getMessage());
+                        exc.printStackTrace();
+                    }
+                    break;
+
+                case "-7":
+                    printTask("-7 -- установить фабрику");
+                    printSetSeriesableFactory();
                     break;
                 // endregion
 
@@ -221,8 +253,7 @@ class Program {
                 case "22":
                     if (s == null) {
                         printRedLn("операция невозможна: серия не задана");
-                    }
-                    if (s != null) {
+                    } else {
                         for (Integer numOfPages : s) {
                             System.out.print(numOfPages);
                             System.out.print(' ');

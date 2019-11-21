@@ -25,6 +25,7 @@ public class NumsOfPagesIterator implements Iterator<Integer> {
 
         int next = numsOfPages[currPos];
         currPos++;
+
         return next;
     }
 }

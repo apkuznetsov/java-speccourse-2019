@@ -1,10 +1,7 @@
 package com.company.Seriesable;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.Iterator;
 
 public interface Seriesable extends Iterable<Integer> {
     int DEFAULT_NUM_OF_START_PAGES = 10;
@@ -40,6 +37,4 @@ public interface Seriesable extends Iterable<Integer> {
     void output(OutputStream out);
 
     void write(Writer out);
-
-    @NotNull Iterator<Integer> iterator();
 }

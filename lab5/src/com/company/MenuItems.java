@@ -4,13 +4,12 @@ import com.company.Exceptions.IllegalIndexException;
 import com.company.Exceptions.NullSeriesableException;
 import com.company.Series.ArticlesSeries;
 import com.company.Series.BooksSeries;
-import com.company.Series.InputAndOutput;
+import com.company.Series.Series;
 import com.company.Series.Seriesable;
 
 import java.io.*;
 import java.util.Scanner;
 
-import static com.company.Series.InputAndOutput.*;
 import static com.company.Series.Series.*;
 
 class MenuItems {
@@ -180,10 +179,10 @@ class MenuItems {
                 System.out.println();
 
                 if (str.equals("1")) {
-                    db[index] = printGetArticlesSerThenSet();
+                    db[index] = Series.getSynchronizedSeriesable(printGetArticlesSerThenSet());
                     break;
                 } else if (str.equals("2")) {
-                    db[index] = printGetBooksSerThenSet();
+                    db[index] = Series.getSynchronizedSeriesable(printGetBooksSerThenSet());
                     break;
                 } else {
                     printRedLn("ошибка: неверный пункт меню");
@@ -389,7 +388,7 @@ class MenuItems {
             FileOutputStream fileOutputter;
             try {
                 fileOutputter = new FileOutputStream(BYTES_FILE);
-                InputAndOutput.outputSeriesable(s, fileOutputter);
+                Series.outputSeriesable(s, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
@@ -408,7 +407,7 @@ class MenuItems {
             FileWriter fileWriter;
             try {
                 fileWriter = new FileWriter(TEXT_FILE);
-                InputAndOutput.writeSeriesable(s, fileWriter);
+                Series.writeSeriesable(s, fileWriter);
                 fileWriter.flush();
                 fileWriter.close();
 
@@ -427,7 +426,7 @@ class MenuItems {
             FileOutputStream fileOutputter;
             try {
                 fileOutputter = new FileOutputStream(OBJECT_FILE);
-                InputAndOutput.serializeSeriesable(s, fileOutputter);
+                Series.serializeSeriesable(s, fileOutputter);
                 fileOutputter.flush();
                 fileOutputter.close();
 
