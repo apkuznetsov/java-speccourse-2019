@@ -3,6 +3,7 @@ package com.company;
 import com.company.Exceptions.NullSeriesableException;
 import com.company.Series.ArticlesSeries;
 import com.company.Series.Seriesable;
+import com.company.Series.SynchronizedSeriesable;
 import com.company.Threads.*;
 
 import java.util.Scanner;
@@ -193,7 +194,10 @@ class Program {
                     WritingThread wt = new WritingThread(testingSer);
                     ReadingThread rt = new ReadingThread(testingSer);
 
+                    wt.setPriority(Thread.MAX_PRIORITY);
                     wt.start();
+
+                    rt.setPriority(Thread.MIN_PRIORITY);
                     rt.start();
                     break;
 
